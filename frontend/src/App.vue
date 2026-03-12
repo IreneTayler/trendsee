@@ -117,35 +117,22 @@
     </aside>
 
     <main class="main">
-      <header class="main__header">
-        <div v-if="activePage === 'overview'">
-          <h1 class="main__title">Рассуждения на тему правильности и неправильности</h1>
-          <p class="main__subtitle">
-            Пример оформления карточки ролика: предпросмотр, метрики и расшифровка.
-          </p>
-        </div>
-        <div v-else>
-          <h1 class="main__title">Лента публикаций</h1>
-          <p class="main__subtitle">
-            Лента постов пользователя с предпросмотром, модалкой и бесконечной прокруткой.
-          </p>
-        </div>
-      </header>
-
-      <section v-if="activePage === 'overview'" class="layout">
-        <div class="layout__left">
+      <section v-if="activePage === 'overview'" class="layout layout--cards">
+        <div
+          v-for="card in demoCards"
+          :key="card.id"
+          class="layout__card"
+        >
           <div class="video-card">
             <div class="video-card-inner">
               <div class="video-card__media">
-                <img src="/src/imgs/image.png" alt="card" class="card-image" />
+                <img :src="card.image" alt="card" class="card-image" />
                 <div class="video-card__chip-row">
-                  <span class="video-card__chip video-card__chip--light">Reels</span>
-                  <span class="video-card__chip video-card__chip--dark">x10</span>
+                  <div class="video-card__chip video-card__chip--light">
+                    <img src="/src/imgs/Vector (14).png" alt="" class="video-card__chip-icon" />
+                    <span>Reels</span>
+                  </div>
                 </div>
-
-                <button class="video-card__play" type="button" aria-label="Play video">
-                  ▶
-                </button>
 
                 <div class="video-card__metrics">
                   <div class="video-card__metric">
@@ -189,34 +176,6 @@
             </div>
           </div>
         </div>
-
-        <div class="layout__right">
-          <section class="panel">
-            <header class="panel__header">
-              <div class="panel__tags">
-                <span class="tag">Туториал</span>
-                <span class="tag">Энергичное видео</span>
-                <span class="tag">Лид магнит</span>
-                <span class="tag tag--accent">Трендовый звук</span>
-              </div>
-            </header>
-
-            <div class="panel__section">
-              <div class="panel__section-header">
-                <h2 class="panel__section-title">Транскрибация</h2>
-                <span class="panel__badge">Переведено</span>
-              </div>
-              <p class="panel__text">
-                SPF скатывается? Смотри — вот эти катушки. И нет, это не всегда "плохой SPF".
-                Скатывается по трём причинам...
-              </p>
-            </div>
-
-            <div class="panel__section panel__section--footer">
-              <button class="primary-button" type="button">Адаптировать</button>
-            </div>
-          </section>
-        </div>
       </section>
 
       <section v-else class="feed-layout">
@@ -233,6 +192,15 @@ import FeedView from "./views/FeedView.vue";
 type Page = "overview" | "feed";
 
 const activePage = ref<Page>("overview");
+
+const demoCards = [
+  { id: 1, image: "/src/imgs/image.png" },
+  { id: 2, image: "/src/imgs/image.png" },
+  { id: 3, image: "/src/imgs/image.png" },
+  { id: 4, image: "/src/imgs/image.png" },
+  { id: 5, image: "/src/imgs/image.png" },
+  { id: 6, image: "/src/imgs/image.png" },
+];
 
 function setPage(page: Page) {
   activePage.value = page;
@@ -540,7 +508,13 @@ function setPage(page: Page) {
 }
 
 .main {
-  padding: 1.5rem 2rem 2rem;
+  width: 974px;
+  border-radius: radius-200;
+  gap: space-0;
+  angle: 0 deg;
+  opacity: 1;
+  padding: space-0;
+  background: #ffffff;
 }
 
 .main__header {
@@ -560,25 +534,27 @@ function setPage(page: Page) {
 }
 
 .layout {
-  display: vertical;
-  width: 254px;
-  height: 160px;
-  padding: 4px;
-  gap: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
 }
 
-.layout__left,
-.layout__right {
-  min-width: 0;
+.layout--cards {
+  padding-top: 8px;
+  justify-content: center;
+}
+
+.layout__card {
+  flex: 0 0 auto;
 }
 
 .card-image{
-  display: flex;
-  justify-content: space-between;
-  width:254px;
+  width: 254px;
   height: 400px;
   border-radius: 16px;
-  padding: 12px
+  justify-content: space-between;
+  angle: 0 deg;
+  opacity: 1;
 }
 
 .feed-layout {
@@ -592,11 +568,18 @@ function setPage(page: Page) {
 }
 
 .video-card {
-  border-radius: 22px;
-  padding: 2px;
-  background: #a855f7;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
-  width: 254px;
+  width: 262px;
+  height: 576px;
+  min-width: 220px;
+  max-width: 262px;
+  border-radius: 16px;
+  padding-top: 4px;
+  padding-right: 4px;
+  padding-bottom: 8px;
+  padding-left: 4px;
+  gap: 4px;
+  angle: 0 deg;
+  opacity: 1;
 }
 
 .video-card > div,
@@ -643,21 +626,6 @@ function setPage(page: Page) {
 .video-card__chip--dark {
   background: rgba(0, 0, 0, 0.85);
   color: #ffffff;
-}
-
-.video-card__play {
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
-  border: none;
-  background: rgba(255, 255, 255, 0.9);
-  color: #f9fafb;
-  font-size: 1.4rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 0 6px rgba(15, 23, 42, 0.25);
 }
 
 .video-card__metrics {
@@ -754,6 +722,16 @@ function setPage(page: Page) {
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+}
+
+.video-card__chip video-card__chip--light{
+  width: 67px;
+  height: 28px;
+  border-radius: 8px;
+  gap: 4px;
+  angle: 0 deg;
+  opacity: 1;
+  padding: 4px;
 }
 
 .stat__label {
