@@ -1,41 +1,41 @@
-services:
-  backend:
-    build:
-      context: ./backend
-    container_name: trendsee-backend
-    env_file:
-      - ./backend/.env
-    depends_on:
-      - db
-      - redis
-    ports:
-      - "8001:8000"
+  services:
+    backend:
+      build:
+        context: ./backend
+      container_name: trendsee-backend
+      env_file:
+        - ./backend/.env
+      depends_on:
+        - db
+        - redis
+      ports:
+        - "8001:8000"
 
-  db:
-    image: postgres:16-alpine
-    container_name: trendsee-postgres
-    environment:
-      POSTGRES_DB: trendsee
-      POSTGRES_USER: trendsee
-      POSTGRES_PASSWORD: trendsee
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    db:
+      image: postgres:16-alpine
+      container_name: trendsee-postgres
+      environment:
+        POSTGRES_DB: trendsee
+        POSTGRES_USER: trendsee
+        POSTGRES_PASSWORD: trendsee
+      ports:
+        - "5432:5432"
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
 
-  redis:
-    image: redis:7-alpine
-    container_name: trendsee-redis
+    redis:
+      image: redis:7-alpine
+      container_name: trendsee-redis
 
-  frontend:
-    build:
-      context: ./frontend
-    container_name: trendsee-frontend
-    depends_on:
-      - backend
-    ports:
-      - "5173:5173"
+    frontend:
+      build:
+        context: ./frontend
+      container_name: trendsee-frontend
+      depends_on:
+        - backend
+      ports:
+        - "5173:5173"
 
-volumes:
-  postgres_data:
+  volumes:
+    postgres_data:
 
