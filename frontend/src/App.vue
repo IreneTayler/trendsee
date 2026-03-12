@@ -7,7 +7,7 @@
 
       <nav class="sidebar__nav">
         <section class="sidebar__group">
-            <p class="sidebar__section-label">Поиск контента</p>
+          <p class="sidebar__section-label">Поиск контента</p>
           <ul>
             <li
               class="sidebar__item"
@@ -38,9 +38,7 @@
         </section>
 
         <section class="sidebar__group">
-          <div class="menu_header">
-            <img src="/src/imgs/Работа с соцсетями.png" class="sidebar__section-label" />
-          </div>
+             <p class="sidebar__section-label">Работа с соцсетями</p>
           <ul>
             <li class="sidebar__item">
               <img src="/src/imgs/Vector (4).png" class="sidebar__item-icon" />
@@ -54,9 +52,7 @@
         </section>
 
         <section class="sidebar__group">
-          <div class="menu_header">
-            <img src="/src/imgs/Инструменты.png" class="sidebar__section-label" />
-          </div>
+          <p class="sidebar__section-label">Инструменты</p>
           <ul>
             <li class="sidebar__item">
               <img src="/src/imgs/Vector (6).png" class="sidebar__item-icon" />
@@ -86,25 +82,35 @@
       <div class="sidebar__bottom">
         <div class="sidebar__tokens">
           <div class="sidebar__tokens-header">
-            <span class="sidebar__tokens-title">Токены</span>
-            <span class="sidebar__tokens-value">1 245 / 4 497</span>
+            <div class="sidebar__tokens-header">
+              <img src="/src/imgs/Fire.png" class="sidebar__tokens-img"/>
+              <span class="sidebar__tokens-title">Токены</span>
+            </div>
+            <div>
+              <span class="sidebar__tokens-value">1 245 / 4 497</span>
+            </div>
           </div>
           <div class="sidebar__tokens-bar">
             <span class="sidebar__tokens-bar-fill"></span>
+          </div>
+           <div class="sidebar__tokens-footer">
+            <span class="sidebar__tokens-Creative">Creative +</span>
+            <img src="/src/imgs/Icon Leading.png" class="sidebar__tokens-img"/>
           </div>
         </div>
 
         <div class="sidebar__profile">
           <div class="sidebar__profile-main">
-            <div class="sidebar__avatar">A</div>
+            <img src="/src/imgs/image1.png" class="sidebar__avatar"/>
             <div class="sidebar__profile-text">
               <p class="sidebar__profile-name">Александра</p>
               <p class="sidebar__profile-phone">+7 (999) 999-99-99</p>
             </div>
           </div>
           <div class="sidebar__profile-footer">
-            <span class="sidebar__profile-label">Creative +</span>
-            <span class="sidebar__profile-locale">RU ▾</span>
+            <img src="/src/imgs/RU.png" class="sidebar__profile-locale-img"/>
+            <span class="sidebar__profile-locale">RU</span>
+            <img src="/src/imgs/Icon Leading (1).png" class="sidebar__profile-img"/>
           </div>
         </div>
       </div>
@@ -247,7 +253,6 @@ function setPage(page: Page) {
   display: flex;
   flex-direction: column;
   width: 274px;
-  height: 800px;
   padding: 12px 12px 16px;
   background: #f4f5f6;
   border-radius: 16px;
@@ -295,12 +300,11 @@ function setPage(page: Page) {
 }
 
 .sidebar__section-label {
-  width: 112px;
   height: 21px;
   color: #83939c;
-  weight: 600;
+  font-weight: 600;
   font: font/family/heading;
-  size: font/size/heading-6;
+  font-size: 15px;
   line-height:font/line-height/heading-6;
   letter-spacing: 0.1px;
 }
@@ -317,19 +321,14 @@ function setPage(page: Page) {
 .sidebar__item {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #374151;
+  width: 242px;
+  height: 40px;
+  radius: 12px;
+  padding: 8px;
+  gap: 16px;
+  border-bottom: 1px;
+  color: #4e616b;
   cursor: pointer;
-  transition:
-    background 0.14s ease,
-    color 0.14s ease;
-}
-
-.sidebar__item:hover {
-  background: rgba(186, 190, 199, 0.8);
 }
 
 .sidebar__item-dot {
@@ -340,10 +339,12 @@ function setPage(page: Page) {
 }
 
 .sidebar__item-icon {
-  width: 20px;
-  height: 20px;
-  border-radius: 8px;
-  background: #e5e7eb;
+  width: 18px;
+  height: 18.74840545654297px;
+  angle: 0 deg;
+  opacity: 1;
+  top: 2.25px;
+  left: 3px;
 }
 
 .sidebar__item-counter {
@@ -391,8 +392,42 @@ function setPage(page: Page) {
   color: #374151;
 }
 
-.sidebar__tokens-title {
+.sidebar__tokens-img{
+  width: 20px;
+  height: 20px;
+  angle: 0 deg;
+  opacity: 1;
+
+}
+.sidebar__tokens-footer{
+  width: 218px;
+  height: 21px;
+  display: flex;
+  justify-content: space-between;
+  angle: 0 deg;
+  opacity: 1;
+}
+.sidebar__tokens-Creative{
+  width: 72px;
+  height: 21px;
+  angle: 0 deg;
+  opacity: 1;
   font-weight: 500;
+  letter-spacing: 0.25px;
+  color: #83939c;
+  font-size: small;
+  font-style: Medium;
+
+}
+
+.sidebar__tokens-title {
+  font-weight: 700;
+  font-style: Italic;
+  font-size: small;
+  leading-trim: NONE;
+  line-height: small;
+  letter-spacing: 0.25px;
+  vertical-align: middle;
 }
 
 .sidebar__tokens-bar {
@@ -427,6 +462,26 @@ function setPage(page: Page) {
   gap: 8px;
 }
 
+.sidebar__profile-locale-img{
+  font-weight: 500;
+  font-style: Medium;
+  font-size: caption;
+  letter-spacing: 0.4px;
+  vertical-align: middle;
+  width: 24px;
+  height: 16px;
+  angle: 0 deg;
+  opacity: 1;
+}
+
+.sidebar__profile-img{
+  width: 16px;
+  height: 16px;
+  angle: 0 deg;
+  opacity: 1;
+
+}
+
 .sidebar__avatar {
   width: 32px;
   height: 32px;
@@ -456,11 +511,20 @@ function setPage(page: Page) {
 }
 
 .sidebar__profile-footer {
+  width: 97px;
+  height: 32px;
+  border-radius: radius-150;
+  padding-top: space-100;
+  padding-right: space-150;
+  padding-bottom: space-100;
+  padding-left: space-150;
+  gap: 8px;
+  angle: 0 deg;
+  opacity: 1;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   font-size: 11px;
-  color: #4b5563;
+  color: #83939c;
 }
 
 .sidebar__profile-label {
