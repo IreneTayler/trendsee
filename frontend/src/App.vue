@@ -2,89 +2,183 @@
   <div class="shell">
     <aside class="sidebar">
       <div class="sidebar__brand">
-        <span class="sidebar__logo-dot" />
-        <span class="sidebar__logo-text">trendsee</span>
-        <span class="sidebar__beta">Beta</span>
+        <img src="/src/imgs/Logo full.png" alt="Trendsee logo" class="sidebar__logo-image" />
       </div>
 
       <nav class="sidebar__nav">
-        <p class="sidebar__section-label">Поиск контента</p>
-        <ul>
-          <li class="sidebar__item sidebar__item--active">
-            <span class="sidebar__item-dot" />
-            <span>Главная</span>
-          </li>
-          <li class="sidebar__item">
-            <span class="sidebar__item-dot" />
-            <span>Видео</span>
-          </li>
-          <li class="sidebar__item">
-            <span class="sidebar__item-dot" />
-            <span>Шпионаж</span>
-          </li>
-          <li class="sidebar__item">
-            <span class="sidebar__item-dot" />
-            <span>Контент радар</span>
-          </li>
-        </ul>
+        <section class="sidebar__group">
+            <p class="sidebar__section-label">Поиск контента</p>
+          <ul>
+            <li
+              class="sidebar__item"
+              :class="{ 'sidebar__item--active': activePage === 'overview' }"
+              @click="setPage('overview')"
+            >
+              <img src="/src/imgs/Vector.png" class="sidebar__item-icon" />
+              <span>Главная</span>
+            </li>
+            <li class="sidebar__item">
+              <img src="/src/imgs/Vector (1).png" class="sidebar__item-icon" />
+              <span>Видео</span>
+            </li>
+            <li class="sidebar__item">
+              <img src="/src/imgs/Vector (2).png" class="sidebar__item-icon" />
+              <span>Шпионаж</span>
+            </li>
+            <li
+              class="sidebar__item"
+              :class="{ 'sidebar__item--active': activePage === 'feed' }"
+              @click="setPage('feed')"
+            >
+              <img src="/src/imgs/Vector (3).png" class="sidebar__item-icon" />
+              <span>Контент радар</span>
+              <span class="sidebar__item-counter">712</span>
+            </li>
+          </ul>
+        </section>
+
+        <section class="sidebar__group">
+          <div class="menu_header">
+            <img src="/src/imgs/Работа с соцсетями.png" class="sidebar__section-label" />
+          </div>
+          <ul>
+            <li class="sidebar__item">
+              <img src="/src/imgs/Vector (4).png" class="sidebar__item-icon" />
+              <span>Кросс-постинг</span>
+            </li>
+            <li class="sidebar__item">
+              <img src="/src/imgs/Vector (5).png" class="sidebar__item-icon" />
+              <span>Чат боты</span>
+            </li>
+          </ul>
+        </section>
+
+        <section class="sidebar__group">
+          <div class="menu_header">
+            <img src="/src/imgs/Инструменты.png" class="sidebar__section-label" />
+          </div>
+          <ul>
+            <li class="sidebar__item">
+              <img src="/src/imgs/Vector (6).png" class="sidebar__item-icon" />
+              <span>ИИ-сценарий</span>
+            </li>
+            <li class="sidebar__item">
+              <img src="/src/imgs/Vector (7).png" class="sidebar__item-icon" />
+              <span>Карусели</span>
+            </li>
+            <li class="sidebar__item">
+              <img src="/src/imgs/Vector (8).png" class="sidebar__item-icon" />
+              <span>Анализ видео</span>
+            </li>
+            <li class="sidebar__item">
+              <img src="/src/imgs/Vector (9).png" class="sidebar__item-icon" />
+              <span>Анализ профиля</span>
+            </li>
+            <li class="sidebar__item sidebar__item--muted">
+              <img src="/src/imgs/Vector (10).png" class="sidebar__item-icon" />
+              <span>Черновики</span>
+              <span class="sidebar__pill">Скоро</span>
+            </li>
+          </ul>
+        </section>
       </nav>
+
+      <div class="sidebar__bottom">
+        <div class="sidebar__tokens">
+          <div class="sidebar__tokens-header">
+            <span class="sidebar__tokens-title">Токены</span>
+            <span class="sidebar__tokens-value">1 245 / 4 497</span>
+          </div>
+          <div class="sidebar__tokens-bar">
+            <span class="sidebar__tokens-bar-fill"></span>
+          </div>
+        </div>
+
+        <div class="sidebar__profile">
+          <div class="sidebar__profile-main">
+            <div class="sidebar__avatar">A</div>
+            <div class="sidebar__profile-text">
+              <p class="sidebar__profile-name">Александра</p>
+              <p class="sidebar__profile-phone">+7 (999) 999-99-99</p>
+            </div>
+          </div>
+          <div class="sidebar__profile-footer">
+            <span class="sidebar__profile-label">Creative +</span>
+            <span class="sidebar__profile-locale">RU ▾</span>
+          </div>
+        </div>
+      </div>
     </aside>
 
     <main class="main">
       <header class="main__header">
-        <div>
+        <div v-if="activePage === 'overview'">
           <h1 class="main__title">Рассуждения на тему правильности и неправильности</h1>
           <p class="main__subtitle">
             Пример оформления карточки ролика: предпросмотр, метрики и расшифровка.
           </p>
         </div>
+        <div v-else>
+          <h1 class="main__title">Лента публикаций</h1>
+          <p class="main__subtitle">
+            Лента постов пользователя с предпросмотром, модалкой и бесконечной прокруткой.
+          </p>
+        </div>
       </header>
 
-      <section class="layout">
+      <section v-if="activePage === 'overview'" class="layout">
         <div class="layout__left">
           <div class="video-card">
-            <div class="video-card__media">
-              <div class="video-card__badge">x10</div>
-              <button class="video-card__play" aria-label="Play video">
-                ▶
-              </button>
-            </div>
+            <div class="video-card-inner">
+              <div class="video-card__media">
+                <img src="/src/imgs/image.png" alt="card" class="card-image" />
+                <div class="video-card__chip-row">
+                  <span class="video-card__chip video-card__chip--light">Reels</span>
+                  <span class="video-card__chip video-card__chip--dark">x10</span>
+                </div>
 
-            <div class="video-card__body">
-              <div class="video-card__meta-row">
-                <span class="video-card__date">12.12.2025</span>
-                <span class="video-card__reels">Reels</span>
+                <button class="video-card__play" type="button" aria-label="Play video">
+                  ▶
+                </button>
+
+                <div class="video-card__metrics">
+                  <div class="video-card__metric">
+                    <span class="video-card__metric-icon">👁️</span>
+                    <span class="video-card__metric-value">105k</span>
+                  </div>
+                  <div class="video-card__metric">
+                    <span class="video-card__metric-icon">❤</span>
+                    <span class="video-card__metric-value">85k</span>
+                  </div>
+                  <div class="video-card__metric">
+                    <span class="video-card__metric-icon">💬</span>
+                    <span class="video-card__metric-value">15k</span>
+                  </div>
+                  <div class="video-card__metric">
+                    <span class="video-card__metric-icon">↻</span>
+                    <span class="video-card__metric-value">485</span>
+                  </div>
+                </div>
               </div>
 
-              <div class="video-card__author">
-                <div class="video-card__avatar">B</div>
-                <div>
-                  <p class="video-card__author-name">@blogerich</p>
-                  <p class="video-card__author-followers">384.5K подписчиков</p>
+              <div class="video-card__body">
+                <div class="video-card__author">
+                  <div class="video-card__avatar">
+                    <span>B</span>
+                  </div>
+                  <div class="video-card__author-text">
+                    <p class="video-card__author-name">@blogerich</p>
+                    <p class="video-card__author-followers">384.5K</p>
+                  </div>
                 </div>
-              </div>
 
-              <p class="video-card__caption">
-                Чтобы выиграть в этой игре, нужно быть настоящим психологом...
-              </p>
+                <p class="video-card__caption">
+                  500 000 лайков на ютубе делаем , бля буду скидываю 😂😂
+                </p>
 
-              <div class="video-card__stats-grid">
-                <div class="stat">
-                  <p class="stat__label">Просмотры</p>
-                  <p class="stat__value">1,2 млн</p>
-                </div>
-                <div class="stat">
-                  <p class="stat__label">Лайки</p>
-                  <p class="stat__value">1,2 млн</p>
-                </div>
-                <div class="stat">
-                  <p class="stat__label">Комментарии</p>
-                  <p class="stat__value">1,2 млн</p>
-                </div>
-                <div class="stat">
-                  <p class="stat__label">Репосты</p>
-                  <p class="stat__value">1,2 млн</p>
-                </div>
+                <p class="video-card__date">12.12.2025</p>
+
+                <button class="video-card__cta" type="button">Анализ</button>
               </div>
             </div>
           </div>
@@ -94,10 +188,10 @@
           <section class="panel">
             <header class="panel__header">
               <div class="panel__tags">
-                <span class="tag tag--outlined">Туториал</span>
-                <span class="tag tag--outlined">Энергичное видео</span>
-                <span class="tag tag--outlined">Лид магнит</span>
-                <span class="tag tag--outlined tag--accent">Трендовый звук</span>
+                <span class="tag">Туториал</span>
+                <span class="tag">Энергичное видео</span>
+                <span class="tag">Лид магнит</span>
+                <span class="tag tag--accent">Трендовый звук</span>
               </div>
             </header>
 
@@ -113,68 +207,102 @@
             </div>
 
             <div class="panel__section panel__section--footer">
-              <button class="primary-button">Адаптировать</button>
+              <button class="primary-button" type="button">Адаптировать</button>
             </div>
           </section>
         </div>
+      </section>
+
+      <section v-else class="feed-layout">
+        <FeedView />
       </section>
     </main>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import FeedView from "./views/FeedView.vue";
+
+type Page = "overview" | "feed";
+
+const activePage = ref<Page>("overview");
+
+function setPage(page: Page) {
+  activePage.value = page;
+}
+</script>
 
 <style scoped>
 .shell {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
-  background: #020617;
-  color: #e5e7eb;
+  grid-template-columns: 274px minmax(0, 1fr);
+  background: #eaecf5;
+  color: #111827;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 .sidebar {
-  border-right: 1px solid rgba(148, 163, 184, 0.35);
-  padding: 1.25rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  background: radial-gradient(circle at top left, #1d283a 0, #020617 55%);
+  width: 274px;
+  height: 800px;
+  padding: 12px 12px 16px;
+  background: #f4f5f6;
+  border-radius: 16px;
 }
 
 .sidebar__brand {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-weight: 600;
+  gap: 8px;
+  padding: 8px 10px 10px;
+  border-radius: 12px;
 }
 
 .sidebar__logo-dot {
-  width: 10px;
-  height: 10px;
+  width: 30.18px;
+  height: 22.65px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #38bdf8, #a855f7);
+  background: #1b1a25;
 }
 
-.sidebar__logo-text {
-  letter-spacing: 0.04em;
+.sidebar__logo-image {
+  height: 28px;
+  object-fit: contain;
 }
 
-.sidebar__beta {
-  font-size: 0.7rem;
-  padding: 0.1rem 0.4rem;
-  border-radius: 999px;
-  background: rgba(56, 189, 248, 0.12);
-  color: #38bdf8;
+.sidebar__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.sidebar__group {
+  padding-inline: 8px;
+}
+
+.menu_header {
+  width: 242px;
+  height: 29px;
+  padding-top: 4px;
+  padding-right: 0px;
+  padding-bottom: 4px;
+  padding-left: 0px;
 }
 
 .sidebar__section-label {
-  margin: 0 0 0.4rem;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #6b7280;
+  width: 112px;
+  height: 21px;
+  color: #83939c;
+  weight: 600;
+  font: font/family/heading;
+  size: font/size/heading-6;
+  line-height:font/line-height/heading-6;
+  letter-spacing: 0.1px;
 }
 
 .sidebar__nav ul {
@@ -190,23 +318,18 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.45rem 0.7rem;
-  border-radius: 0.75rem;
-  font-size: 0.9rem;
-  color: #d1d5db;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #374151;
   cursor: pointer;
   transition:
     background 0.14s ease,
     color 0.14s ease;
 }
 
-.sidebar__item--active {
-  background: rgba(15, 23, 42, 0.95);
-  color: #f9fafb;
-}
-
 .sidebar__item:hover {
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(186, 190, 199, 0.8);
 }
 
 .sidebar__item-dot {
@@ -214,6 +337,142 @@
   height: 7px;
   border-radius: 999px;
   background: rgba(148, 163, 184, 0.7);
+}
+
+.sidebar__item-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 8px;
+  background: #e5e7eb;
+}
+
+.sidebar__item-counter {
+  margin-left: auto;
+  font-size: 11px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #111827;
+  color: #ffffff;
+}
+
+.sidebar__item--muted {
+  opacity: 0.6;
+}
+
+.sidebar__pill {
+  margin-left: auto;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  color: #4b5563;
+}
+
+.sidebar__bottom {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar__tokens {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.03);
+}
+
+.sidebar__tokens-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 11px;
+  color: #374151;
+}
+
+.sidebar__tokens-title {
+  font-weight: 500;
+}
+
+.sidebar__tokens-bar {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.sidebar__tokens-bar-fill {
+  position: absolute;
+  inset: 0;
+  width: 60%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #6366f1, #22c55e);
+}
+
+.sidebar__profile {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.03);
+}
+
+.sidebar__profile-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #6366f1, #22c55e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.sidebar__profile-text {
+  font-size: 11px;
+  color: #374151;
+}
+
+.sidebar__profile-name {
+  margin: 0;
+  font-weight: 500;
+}
+
+.sidebar__profile-phone {
+  margin: 0;
+  color: #6b7280;
+}
+
+.sidebar__profile-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #4b5563;
+}
+
+.sidebar__profile-label {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #f3e8ff;
+}
+
+.sidebar__profile-locale {
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: #f3f4f6;
 }
 
 .main {
@@ -233,13 +492,15 @@
 .main__subtitle {
   margin: 0;
   font-size: 0.9rem;
-  color: #9ca3af;
+  color: #6b7280;
 }
 
 .layout {
-  display: grid;
-  grid-template-columns: minmax(0, 340px) minmax(0, 1.6fr);
-  gap: 1.5rem;
+  display: vertical;
+  width: 254px;
+  height: 160px;
+  padding: 4px;
+  gap: 4px;
 }
 
 .layout__left,
@@ -247,13 +508,42 @@
   min-width: 0;
 }
 
-.video-card {
-  border-radius: 1.25rem;
+.card-image{
+  display: flex;
+  justify-content: space-between;
+  width:254px;
+  height: 400px;
+  border-radius: 16px;
+  padding: 12px
+}
+
+.feed-layout {
   background: #020617;
+  border-radius: 1.25rem;
   border: 1px solid rgba(148, 163, 184, 0.55);
+  padding: 1.5rem 1.75rem 1.75rem;
   box-shadow:
     0 22px 60px rgba(15, 23, 42, 0.85),
     0 0 0 1px rgba(15, 23, 42, 0.95);
+}
+
+.video-card {
+  border-radius: 22px;
+  padding: 2px;
+  background: #a855f7;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
+  width: 254px;
+}
+
+.video-card > div,
+.video-card__media,
+.video-card__body {
+  border-radius: 20px;
+}
+
+.video-card-inner {
+  background: #ffffff;
+  border-radius: 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -261,63 +551,90 @@
 
 .video-card__media {
   position: relative;
-  padding-top: 160%;
-  background: linear-gradient(135deg, #f97316, #ec4899);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.video-card__badge {
+.video-card__chip-row {
   position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  padding: 0.2rem 0.6rem;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  gap: 6px;
+}
+
+.video-card__chip {
+  position: absolute;
+  padding: 4px 10px;
   border-radius: 999px;
-  font-size: 0.75rem;
-  background: rgba(15, 23, 42, 0.7);
-  color: #fbbf24;
+  font-size: 11px;
+}
+
+.video-card__chip--light {
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+}
+
+.video-card__chip--dark {
+  background: rgba(0, 0, 0, 0.85);
+  color: #ffffff;
 }
 
 .video-card__play {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border-radius: 999px;
   border: none;
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(255, 255, 255, 0.9);
   color: #f9fafb;
   font-size: 1.4rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 6px rgba(15, 23, 42, 0.35);
+  box-shadow: 0 0 0 6px rgba(15, 23, 42, 0.25);
+}
+
+.video-card__metrics {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.video-card__metric {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.video-card__metric-icon {
+  font-size: 12px;
+  color: #f9fafb;
+}
+
+.video-card__metric-value {
+  font-size: 11px;
+  color: #f9fafb;
 }
 
 .video-card__body {
-  padding: 1.1rem 1.2rem 1.2rem;
+  padding: 10px 14px 14px;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-}
-
-.video-card__meta-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  color: #9ca3af;
-}
-
-.video-card__reels {
-  padding: 0.1rem 0.45rem;
-  border-radius: 999px;
-  background: rgba(56, 189, 248, 0.1);
-  color: #38bdf8;
+  gap: 8px;
 }
 
 .video-card__author {
   display: flex;
-  gap: 0.6rem;
+  gap: 8px;
   align-items: center;
 }
 
@@ -333,35 +650,46 @@
   font-weight: 600;
 }
 
+.video-card__author-text {
+  font-size: 11px;
+}
+
 .video-card__author-name {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 12px;
+  color: #2a3cff;
 }
 
 .video-card__author-followers {
   margin: 0;
-  font-size: 0.75rem;
-  color: #9ca3af;
+  font-size: 11px;
+  color: #6b7280;
 }
 
 .video-card__caption {
   margin: 0;
-  font-size: 0.85rem;
-  color: #d1d5db;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #111827;
 }
 
-.video-card__stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.6rem;
-  margin-top: 0.4rem;
+.video-card__date {
+  margin: 0;
+  font-size: 11px;
+  color: #9ca3af;
 }
 
-.stat {
-  border-radius: 0.9rem;
-  background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.55);
-  padding: 0.55rem 0.75rem;
+.video-card__cta {
+  margin-top: 6px;
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 0;
+  background: #4338ca;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .stat__label {
