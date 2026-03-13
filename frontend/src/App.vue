@@ -142,13 +142,11 @@
                   </div>
 
                   <div class="video-card__chip-row-right">
-                      <div class="video-card__chip">
-                        <img src="/src/imgs/Vector (14).png" alt="" class="video-card__chip-icon" />
-                        <span class="video-card__chip-letter">Reels</span>
+                      <div class="video-card__chip-right">
+                        <img src="/src/imgs/Heart.png" alt="" class="video-card__chip-icon" />
                       </div>
-                      <div class="video-card__chip_down">
-                        <img src="/src/imgs/Vector (12).png" alt="" class="video-card__chip-icon" />
-                        <span class="video-card__chip-letter"> X 10</span>
+                      <div class="video-card__chip-right_down">
+                        <img src="/src/imgs/Vector (13).png" alt="" class="video-card__chip-icon" />
                     </div>
 
                   </div>
@@ -156,20 +154,28 @@
 
                 <div class="video-card__metrics">
                   <div class="video-card__metric">
-                    <span class="video-card__metric-icon">👁️</span>
-                    <span class="video-card__metric-value">105k</span>
+                    <div>
+                      <img src="/src/imgs/Vector (15).png" alt="" class="video-card__metric-icon-views" />
+                    </div>
+                    <div class="video-card__metric-value">105k</div>
                   </div>
                   <div class="video-card__metric">
-                    <span class="video-card__metric-icon">❤</span>
-                    <span class="video-card__metric-value">85k</span>
+                    <div>
+                      <img src="/src/imgs/Vector (16).png" alt="" class="video-card__metric-icon-likes" />
+                    </div>
+                    <div class="video-card__metric-value">85k</div>
                   </div>
                   <div class="video-card__metric">
-                    <span class="video-card__metric-icon">💬</span>
-                    <span class="video-card__metric-value">15k</span>
+                    <div>
+                      <img src="/src/imgs/Vector (17).png" alt="" class="video-card__metric-icon-comments" />
+                    </div>
+                    <div class="video-card__metric-value">15k</div>
                   </div>
                   <div class="video-card__metric">
-                    <span class="video-card__metric-icon">↻</span>
-                    <span class="video-card__metric-value">485</span>
+                    <div>
+                      <img src="/src/imgs/Vector (18).png" alt="" class="video-card__metric-icon-shares" />
+                    </div>
+                    <div class="video-card__metric-value">485k</div>
                   </div>
                 </div>
               </div>
@@ -658,6 +664,18 @@ function setPage(page: Page) {
   display: flex;  
   margin-top:3px
 }
+.video-card__chip-right_down{  
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  gap: 8px;
+  angle: 0 deg;
+  opacity: 1;
+  padding: 8px;
+  background: var(--Black-40, #00000066);
+  backdrop-filter: blur(16px);
+  display: flex;  
+}
 .video-card__chip {
   width: 67px;
   height: 28px;
@@ -666,6 +684,19 @@ function setPage(page: Page) {
   angle: 0 deg;
   opacity: 1;
   padding: 4px;
+  background: var(--Black-40, #00000066);
+  backdrop-filter: blur(16px);
+  display: flex; 
+}
+
+.video-card__chip-right {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  gap: 8px;
+  angle: 0 deg;
+  opacity: 1;
+  padding: 8px;
   background: var(--Black-40, #00000066);
   backdrop-filter: blur(16px);
   display: flex; 
@@ -706,28 +737,87 @@ function setPage(page: Page) {
   left: 10px;
   right: 10px;
   bottom: 10px;
-  padding: 6px 10px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.7));
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 230px;
+  height: 55px;
+  border-radius: 12px;
+  justify-content: space-between;
+  padding-top: 8px;
+  padding-right: 4px;
+  padding-bottom: 8px;
+  padding-left: 4px;
+  angle: 0 deg;
+  opacity: 1;
+  background: var(--Black-30, #0000004D);
+  backdrop-filter: blur(8px)
 }
 
 .video-card__metric {
   display: flex;
   align-items: center;
+  width: 55.5px;
+  height: 39px;
   gap: 4px;
+  angle: 0 deg;
+  opacity: 1;
+  flex-direction: column;
 }
 
-.video-card__metric-icon {
-  font-size: 12px;
-  color: #f9fafb;
+.video-card__metric-icon-views {
+  width: 18.749984741210938px;
+  height: 12.5px;
+  angle: 0 deg;
+  opacity: 1;
+  top: 3.75px;
+  left: 0.63px;
+}
+
+.video-card__metric-icon-likes {
+  width: 17.5px;
+  height: 14.99646282196045px;
+  angle: 0 deg;
+  opacity: 1;
+  top: 2.5px;
+  left: 1.25px;
+}
+
+.video-card__metric-icon-comments {
+  width: 16.24843978881836px;
+  height: 16.25px;
+  angle: 0 deg;
+  opacity: 1;
+  top: 1.88px;
+  left: 1.87px;
+}
+
+
+.video-card__metric-icon-shares {
+  width: 18px;
+  height: 18px;
+  angle: 0 deg;
+  opacity: 1;
+
 }
 
 .video-card__metric-value {
-  font-size: 11px;
-  color: #f9fafb;
+  width: 29px;
+  height: 15px;
+  angle: 0 deg;
+  opacity: 1;
+  font-family: inter;
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 12px;
+  leading-trim: NONE;
+  line-height: 14.5px;
+  letter-spacing: 0.4px;
+  text-align: center;
+  vertical-align: bottom;
+  color: #ffffff;
+
 }
 
 .video-card__body {
