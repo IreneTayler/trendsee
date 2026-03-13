@@ -127,12 +127,32 @@
             <div class="video-card-inner">
               <div class="video-card__media">
                 <img :src="card.image" alt="card" class="card-image" />
-                <div class="video-card__chip-row">
-                  <div class="video-card__chip video-card__chip--light">
-                    <img src="/src/imgs/Vector (14).png" alt="" class="video-card__chip-icon" />
-                    <span>Reels</span>
+                <div class="video-card_chip-list">
+
+                  <div class="video-card__chip-row-left">
+                    <div class="video-card__chip">
+                      <img src="/src/imgs/Vector (14).png" alt="" class="video-card__chip-icon" />
+                      <span class="video-card__chip-letter">Reels</span>
+                    </div>
+
+                    <div class="video-card__chip_down">
+                      <img src="/src/imgs/Vector (12).png" alt="" class="video-card__chip-icon" />
+                      <span class="video-card__chip-letter"> X 10</span>
+                    </div>
                   </div>
-                </div>
+
+                  <div class="video-card__chip-row-right">
+                      <div class="video-card__chip">
+                        <img src="/src/imgs/Vector (14).png" alt="" class="video-card__chip-icon" />
+                        <span class="video-card__chip-letter">Reels</span>
+                      </div>
+                      <div class="video-card__chip_down">
+                        <img src="/src/imgs/Vector (12).png" alt="" class="video-card__chip-icon" />
+                        <span class="video-card__chip-letter"> X 10</span>
+                    </div>
+
+                  </div>
+                </div>  
 
                 <div class="video-card__metrics">
                   <div class="video-card__metric">
@@ -603,19 +623,72 @@ function setPage(page: Page) {
   justify-content: center;
 }
 
-.video-card__chip-row {
+.video-card__chip-row-left {
   position: absolute;
   top: 10px;
   left: 10px;
-  display: flex;
   gap: 6px;
 }
 
-.video-card__chip {
+
+.video-card__chip-row-right {
   position: absolute;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 11px;
+  top: 10px;
+  right: 10px;
+  gap: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.video-card_chip-list{
+  display: flex;
+  justify-content: space-between;
+}
+.video-card__chip_down{  
+  width: 57px;
+  height: 28px;
+  border-radius: 8px;
+  gap: 4px;
+  angle: 0 deg;
+  opacity: 1;
+  padding: 4px;
+  background: var(--Black-40, #00000066);
+  backdrop-filter: blur(16px);
+  display: flex;  
+  margin-top:3px
+}
+.video-card__chip {
+  width: 67px;
+  height: 28px;
+  border-radius: 8px;
+  gap: 4px;
+  angle: 0 deg;
+  opacity: 1;
+  padding: 4px;
+  background: var(--Black-40, #00000066);
+  backdrop-filter: blur(16px);
+  display: flex; 
+}
+
+.video-card__chip-icon{
+  width: 20px;
+  height: 20px;
+  gap: 10px;
+  angle: 0 deg;
+  opacity: 1;
+  padding: 2px;
+}
+
+.video-card__chip-letter{
+  width: 35px;
+  height: 15px;
+  padding-right: 2px;
+  gap: 10px;
+  angle: 0 deg;
+  opacity: 1;
+  color: #ffffff;
+  font-size: 13px;
 }
 
 .video-card__chip--light {
