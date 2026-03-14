@@ -4,29 +4,57 @@
       <img v-if="imageSrc" :src="imageSrc" alt="" class="post-card__img" />
       <div v-else class="post-card__media-placeholder" />
       <div class="post-card__badges post-card__badges--left">
-        <span class="post-card__badge"><span class="post-card__badge-icon">▶</span> Reels</span>
-        <span class="post-card__badge"><span class="post-card__badge-icon">🔥</span> X10</span>
+        <span class="post-card__badge">
+          <span class="post-card__badge-icon"><img :src="socialMediaLogos" alt="trendsee" class="size-[16px]" /> </span> 
+          Reels
+        </span>
+        <span class="post-card__badge">
+          <span class="post-card__badge-icon"><img :src="whiteFire" alt="trendsee" class="size-[16px]" /> </span> 
+          X10
+        </span>
       </div>
       <div class="post-card__badges post-card__badges--right">
-        <span class="post-card__action-icon">♡</span>
-        <span class="post-card__action-icon">↗</span>
+        <span class="post-card__action-icon">
+          <img :src="Heart" alt="trendsee" class="size-[16px]" />
+        </span>
+        <span class="post-card__action-icon">
+          <img :src="externalLink" alt="trendsee" class="size-[16px]" />
+        </span>
       </div>
       <div class="post-card__metrics">
-        <span class="post-card__metric">👁 105k</span>
-        <span class="post-card__metric">♡ 85k</span>
-        <span class="post-card__metric">💬 15k</span>
-        <span class="post-card__metric">↗ 485</span>
+        <div class="post-card__metric">
+          <div  class="size-[20px]" ><img :src="eye" alt=""/></div> 
+          <div class="text-xs">105k</div>
+        </div>
+        <div class="post-card__metric">
+          <div  class="size-[20px]" ><img :src="Heart" alt=""/></div> 
+          <div class="text-xs">85k</div>
+        </div>
+        <div class="post-card__metric">
+          <div  class="size-[20px]" ><img :src="comments" alt=""/></div> 
+          <div class="text-xs">15k</div>
+        </div>
+        <div class="post-card__metric">
+          <div  class="size-[20px]" ><img :src="shares" alt=""/></div> 
+          <div class="text-xs">485</div>
+        </div>
       </div>
     </div>
     <div class="post-card__body">
       <div class="post-card__profile">
-        <div class="post-card__avatar">B</div>
+        <div class="">
+          <img :src="image1" alt="" class="size-[40px] post-card__avatar" />          
+        </div>
         <div class="post-card__profile-text">
           <span class="post-card__username">@blogerich</span>
           <span class="post-card__followers">384.5K</span>
         </div>
+        <div class="size-[24px]">
+          <img :src="incognitoMode" alt=""  />          
+          <img :src="plus" alt=""  />          
+        </div>
       </div>
-      <h2 class="post-card__title">{{ post.title }}</h2>
+      <!-- <h2 class="post-card__title">{{ post.title }}</h2> -->
       <p class="post-card__preview">{{ previewText }}</p>
       <p class="post-card__date">{{ formattedDate }}</p>
       <button type="button" class="post-card__cta" @click.stop="$emit('click')">Анализ</button>
@@ -41,6 +69,18 @@ const props = defineProps<{ post: Post; imageSrc?: string }>();
 defineEmits<{ (e: "click"): void }>();
 const previewText = computed(() => (props.post.text.length > 140 ? props.post.text.slice(0, 140) + "…" : props.post.text));
 const formattedDate = computed(() => new Date(props.post.created_at).toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric" }));
+
+
+import socialMediaLogos from "../imgs/Social media Logos.png";
+import whiteFire from "../imgs/white_fire.png";
+import Heart from "../imgs/Heart.png";
+import externalLink from "../imgs/External Link.png";
+import eye from "../imgs/eye.png";
+import comments from "../imgs/Comments.png";
+import shares from "../imgs/Shares.png";
+import image1 from "../imgs/image1.png";
+import incognitoMode from "../imgs/Incognito_mode.png";
+import plus from "../imgs/plus.png";
 </script>
 
 <style scoped>
@@ -51,18 +91,19 @@ const formattedDate = computed(() => new Date(props.post.created_at).toLocaleDat
 .post-card__badges { position: absolute; display: flex; flex-direction: column; gap: 6px; }
 .post-card__badges--left { top: 10px; left: 10px; }
 .post-card__badges--right { top: 10px; right: 10px; }
-.post-card__badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; background: rgba(15,23,42,.75); color: #fff; font-size: 11px; }
+.post-card__badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 8px; background: var(--Black-40, #00000066); backdrop-filter: blur(16px); color: #fff; font-size: 12px; }
 .post-card__action-icon { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: rgba(15,23,42,.6); color: #fff; font-size: 14px; }
-.post-card__metrics { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; justify-content: space-between; padding: 8px 12px; border-radius: 999px; background: linear-gradient(90deg, rgba(15,23,42,.88), rgba(15,23,42,.72)); color: #fff; font-size: 11px; }
+.post-card__metrics { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; justify-content: space-between; padding: 8px 16px; border-radius: 12px; background: var(--Black-30, #0000004D); backdrop-filter: blur(8px); color: #fff; font-size: 12px; }
 .post-card__body { padding: 12px 14px 14px; }
 .post-card__profile { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
 .post-card__avatar { width: 36px; height: 36px; border-radius: 999px; background: linear-gradient(135deg, #f97316, #ec4899 50%, #6366f1); color: #fff; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .post-card__profile-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
-.post-card__username { font-size: 13px; font-weight: 600; color: #4338ca; }
-.post-card__followers { font-size: 11px; color: #64748b; }
+.post-card__username { font-size: 14px; font-weight: 600; color: #2b31b3; }
+.post-card__followers { font-size: 12px; color: #4e616b; }
 .post-card__title { margin: 0 0 6px; font-size: 14px; font-weight: 600; color: #0f172a; line-height: 1.3; }
 .post-card__preview { margin: 0 0 8px; font-size: 13px; line-height: 1.45; color: #334155; }
 .post-card__date { margin: 0 0 12px; font-size: 11px; color: #94a3b8; }
 .post-card__cta { width: 100%; padding: 10px 16px; border: none; border-radius: 999px; background: #4338ca; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
 .post-card__cta:hover { background: #3730a3; }
+
 </style>
