@@ -38,28 +38,45 @@
       </SidebarGroup>
     </nav>
 
-    <div class="mt-4 space-y-3 border-t border-slate-700 pt-4">
+    <div class="flex-1 space-y-4 mt-6 p-4 bg-white rounded-xl">
+      <div class="flex justify-between">
+        <div class="flex">
+          <img :src="Fire" alt="trendsee" class="h-[24px] w-[24px]" />
+          <p class="mb-1 text-sm font-bold italic text-[#4e616b]">Токены</p>
+        </div>
+        <p class="text-sm text-[#4e616b]">1 245 / 4 497</p>
+      </div>
       <div>
-        <p class="mb-1 text-xs font-medium text-red-400">Токены</p>
-        <p class="text-xs text-slate-400">1 245 / 4 497</p>
         <div class="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-slate-700">
           <div class="h-full w-[28%] rounded-full bg-indigo-500" />
         </div>
       </div>
-      <button type="button" class="flex w-full items-center justify-between text-xs text-slate-400 hover:text-white">
+      <button type="button" class="flex w-full items-center justify-between text-base text-[#4e616b] hover:text-white">
         Creative +
-        <span>→</span>
+        <span><img :src="iconLeadingRight" alt="trendsee" class="size-[20px]" /></span>
       </button>
-      <div class="flex items-center gap-3 rounded-lg bg-slate-800/80 p-2">
-        <div class="h-10 w-10 flex-shrink-0 rounded-full bg-gradient-to-br from-indigo-500 to-pink-500" />
-        <div class="min-w-0 flex-1">
-          <p class="truncate text-sm font-medium text-white">Александра</p>
-          <p class="truncate text-xs text-slate-400">+7 (999) 999-99-99</p>
-        </div>
-        <span class="text-xs text-slate-500">RU</span>
-        <button type="button" class="text-slate-400 hover:text-white" aria-label="Выход">↗</button>
-      </div>
     </div>
+
+    <div class="flex items-center space-y-4 gap-3 p-2">
+      <div class="flex-shrink-0 from-indigo-500 to-pink-500" >
+        <img :src="image1" alt="trendsee" class="size-[30px] rounded-full" />
+      </div>
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-base text-[#41616b]">Александра</p>
+        <p class="truncate text-xs text-slate-400">+7 (999) 999-99-99</p>
+      </div>
+      <button type="button" class="text-slate-400 hover:text-white" aria-label="Выход">
+        <img :src="iconLeadingRightMore" alt="trendsee" class="size-[15px]" />          
+      </button>
+    </div>
+
+    <div class="flex items-end space-y-4 gap-3 pl-2">       
+        <img :src="RU" alt="trendsee" class="size-[20px]" /> 
+        <span class="text-xs text-slate-500">RU</span>
+        <img :src="iconLeadingDown" alt="trendsee" class="size-[15px]" /> 
+    </div>
+
+    
   </aside>
 </template>
 
@@ -68,4 +85,10 @@ import SidebarGroup from "./SidebarGroup.vue";
 import SidebarItem from "./SidebarItem.vue";
 import logoUrl from "../imgs/Logo full.png";
 import iconLeadingLeft from "../imgs/Icon_leading_left.png";
+import Fire from "../imgs/Fire.png";
+import iconLeadingRight from "../imgs/Icon_leading_right.png";
+import image1 from "../imgs/image1.png";
+import iconLeadingRightMore from "../imgs/Icon_leading_right_more.png";
+import RU from "../imgs/RU.png";
+import iconLeadingDown from "../imgs/Icon_leading_down.png";
 </script>
