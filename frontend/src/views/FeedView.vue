@@ -1,15 +1,11 @@
 <template>
   <section class="space-y-4">
-    <header class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-      <div>
-        <h2 class="text-lg font-semibold text-slate-900">Ваши публикации</h2>
-        <p class="text-sm text-slate-500">Пользователь по умолчанию – <code>#1</code>. Без данных с бэкенда отображаются демо-карточки.</p>
-      </div>
+    <!-- <header class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <label class="flex flex-col text-xs font-medium text-slate-500">
         <span class="mb-1">User ID</span>
         <input v-model.number="userId" type="number" min="1" class="w-24 rounded-lg border border-slate-300 px-2 py-1 text-sm text-slate-900" />
       </label>
-    </header>
+    </header> -->
 
     <!-- Row label like in design: date + Анализ -->
     <div class="flex flex-wrap items-center gap-3 text-sm text-slate-500">
