@@ -1,8 +1,5 @@
 import axios from "axios";
-
-const api = axios.create({
-  baseURL: "/api",
-});
+const api = axios.create({ baseURL: "/api" });
 
 export interface Post {
   id: number;
@@ -13,19 +10,7 @@ export interface Post {
   updated_at: string;
 }
 
-export async function fetchUserPosts(
-  userId: number,
-  limit: number,
-  offset: number,
-): Promise<Post[]> {
-  const response = await api.get<Post[]>(`/posts/user/${userId}`, {
-    params: { limit, offset },
-  });
-  return response.data;
+export async function fetchUserPosts(userId: number, limit: number, offset: number): Promise<Post[]> {
+  const { data } = await api.get<Post[]>(`/posts/user/${userId}`, { params: { limit, offset } });
+  return data;
 }
-
-export async function fetchPost(postId: number): Promise<Post> {
-  const response = await api.get<Post>(`/posts/${postId}`);
-  return response.data;
-}
-
