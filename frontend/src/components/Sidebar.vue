@@ -1,39 +1,40 @@
 <template>
-  <aside class="flex w-64 flex-col bg-slate-900 px-4 py-5 text-slate-100">
+  <aside class="fixed top-0 left-0 h-screen text-white flex w-64 flex-col bg-[#f4f5f6] px-4 py-5 text-slate-100 ">
     <div class="mb-4 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <img :src="logoUrl" alt="trendsee" class="h-7 object-contain" />
-        <span class="text-xs text-slate-400">Beta</span>
       </div>
-      <button type="button" class="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white hover:bg-indigo-500">+</button>
+      <button type="button" class="flex size-[20px] justify-end">
+        <img :src="iconLeadingLeft" alt="trendsee" class="size-[15px]" />
+      </button>
     </div>
-
-    <input
-      type="text"
-      placeholder="Поиск контента"
-      class="mb-4 w-full rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-white placeholder-slate-400 focus:border-indigo-500 focus:outline-none"
-    />
 
     <nav class="flex-1 space-y-4">
       <SidebarGroup>
-        <template #label>Поиск контента</template>
-        <SidebarItem active>Главная</SidebarItem>
-        <SidebarItem>Видео</SidebarItem>
-        <SidebarItem>Шпионаж</SidebarItem>
-        <SidebarItem badge="712">Контент радар</SidebarItem>
-      </SidebarGroup>
+        <template #label class="text-lowercase">
+          <div class="text-[#839397] text-sm text-lowercase">Поиск контента</div>
+        </template>
+        <SidebarItem :image="'src/imgs/Vector.png'">Главная</SidebarItem>
+        <SidebarItem :image="'src/imgs/Vector (1).png'">Видео</SidebarItem>
+        <SidebarItem :image="'src/imgs/Vector (2).png'">Шпионаж</SidebarItem>
+        <SidebarItem :image="'src/imgs/Vector (3).png'" badge="712">Контент радар</SidebarItem>
+      </SidebarGroup :image="'src/imgs/Vector (4).png'">
       <SidebarGroup>
-        <template #label>Работа с соцсетями</template>
-        <SidebarItem>Кросс-постинг</SidebarItem>
-        <SidebarItem>Чат боты</SidebarItem>
+        <template #label class="text-lowercase">
+          <div class="text-[#839397] text-sm text-lowercase">соцсетями</div>
+        </template>
+        <SidebarItem :image="'src/imgs/Vector (5).png'">Кросс-постинг</SidebarItem>
+        <SidebarItem :image="'src/imgs/Vector (6).png'">Чат боты</SidebarItem>
       </SidebarGroup>
-      <SidebarGroup>
-        <template #label>Инструменты</template>
-        <SidebarItem>ИИ-сценарий</SidebarItem>
-        <SidebarItem>Карусели</SidebarItem>
-        <SidebarItem>Анализ видео</SidebarItem>
-        <SidebarItem>Анализ профиля</SidebarItem>
-        <SidebarItem badge="Скоро">Черновик</SidebarItem>
+      <SidebarGroup>        
+        <template #label class="text-lowercase">
+          <div class="text-[#839397] text-sm text-lowercase">Инструменты</div>
+        </template>
+        <SidebarItem :image="'src/imgs/Vector (7).png'">ИИ-сценарий</SidebarItem>
+        <SidebarItem :image="'src/imgs/Vector (8).png'">Карусели</SidebarItem>
+        <SidebarItem :image="'src/imgs/Vector (9).png'">Анализ видео</SidebarItem>
+        <SidebarItem :image="'src/imgs/Vector (10).png'">Анализ профиля</SidebarItem>
+        <SidebarItem :image="'src/imgs/Vector (11).png'" badge="Скоро">Черновик</SidebarItem>
       </SidebarGroup>
     </nav>
 
@@ -66,4 +67,5 @@
 import SidebarGroup from "./SidebarGroup.vue";
 import SidebarItem from "./SidebarItem.vue";
 import logoUrl from "../imgs/Logo full.png";
+import iconLeadingLeft from "../imgs/Icon_leading_left.png";
 </script>

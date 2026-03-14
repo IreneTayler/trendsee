@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-1">
-    <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500"><slot name="label" /></p>
+    <p class="mb-1 text-xs font-semibold tracking-wide text-slate-500 h-[29px]"><slot name="label" /></p>
     <ul class="space-y-1"><slot /></ul>
   </div>
 </template>
