@@ -1,39 +1,43 @@
 <template>
-  <section>
-    <header class="feed-header">
+  <section class="space-y-4">
+    <header class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <h2 class="feed-header__title">Your posts</h2>
-        <p class="feed-header__subtitle">
-          Infinite scroll feed with cached backend. Demo user: <code>#1</code>
-        </p>
+        <h2 class="text-lg font-semibold text-slate-900">Ваши публикации</h2>
+        <p class="text-sm text-slate-500">Пользователь по умолчанию – <code>#1</code>. Без данных с бэкенда отображаются демо-карточки.</p>
       </div>
-      <div class="feed-header__controls">
-        <label class="feed-header__field">
-          <span>User ID</span>
-          <input v-model.number="userId" type="number" min="1" />
-        </label>
-      </div>
+      <label class="flex flex-col text-xs font-medium text-slate-500">
+        <span class="mb-1">User ID</span>
+        <input v-model.number="userId" type="number" min="1" class="w-24 rounded-lg border border-slate-300 px-2 py-1 text-sm text-slate-900" />
+      </label>
     </header>
 
-    <div class="feed" ref="feedContainer">
+    <!-- Row label like in design: date + Анализ -->
+    <div class="flex flex-wrap items-center gap-3 text-sm text-slate-500">
+      <span>12.12.2025</span>
+      <button type="button" class="rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">Анализ</button>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" ref="feedRoot">
       <PostCard
-        v-for="post in posts"
-        :key="post.id"
-        :post="post"
-        @click="openPost(post)"
+        v-for="item in displayCards"
+        :key="item.post.id"
+        :post="item.post"
+        :image-src="item.imageSrc"
+        @click="openPost(item.post)"
       />
-
-      <p v-if="!isLoading && posts.length === 0" class="feed__empty">
-        No posts yet for this user.
-      </p>
-
-      <div v-if="isLoading" class="feed__loader">
-        <span class="spinner" /> Loading…
+      <div v-if="isLoading" class="col-span-full flex items-center justify-center gap-2 text-sm text-slate-500">
+        <span class="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-sky-400" /> Загрузка…
       </div>
+      <p v-if="!hasMore && posts.length > 0" class="col-span-full text-center text-xs text-slate-400">Вы дошли до конца ленты.</p>
+    </div>
 
-      <p v-if="!hasMore && posts.length > 0" class="feed__end">
-        You have reached the end.
-      </p>
+    <!-- Find more reels + progress like in design -->
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+      <button type="button" class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-white hover:bg-indigo-700">
+        <span>⚡</span>
+        Найти еще ролики
+      </button>
+      <span class="text-sm text-slate-500">Видео: {{ displayCards.length }} из 3000</span>
     </div>
 
     <PostModal :visible="isModalOpen" :post="selectedPost" @close="isModalOpen = false" />
@@ -41,10 +45,26 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { fetchUserPosts, type Post } from "../api";
 import PostCard from "../components/PostCard.vue";
 import PostModal from "../components/PostModal.vue";
+
+import img1 from "../imgs/image.png";
+import img2 from "../imgs/image1.png";
+import img3 from "../imgs/Kare.png";
+
+const CAPTION = "500 000 лайков на ютубе делаем , бля буду скидываю 😂😂";
+const DEMO_DATE = "2025-12-12T12:00:00Z";
+
+const demoCards: { post: Post; imageSrc: string }[] = [
+  { post: { id: 1, user_id: 1, title: "Reels", text: CAPTION, created_at: DEMO_DATE, updated_at: DEMO_DATE }, imageSrc: img1 },
+  { post: { id: 2, user_id: 1, title: "Reels", text: CAPTION, created_at: DEMO_DATE, updated_at: DEMO_DATE }, imageSrc: img2 },
+  { post: { id: 3, user_id: 1, title: "Reels", text: CAPTION, created_at: DEMO_DATE, updated_at: DEMO_DATE }, imageSrc: img3 },
+  { post: { id: 4, user_id: 1, title: "Reels", text: CAPTION, created_at: DEMO_DATE, updated_at: DEMO_DATE }, imageSrc: img1 },
+  { post: { id: 5, user_id: 1, title: "Reels", text: CAPTION, created_at: DEMO_DATE, updated_at: DEMO_DATE }, imageSrc: img2 },
+  { post: { id: 6, user_id: 1, title: "Reels", text: CAPTION, created_at: DEMO_DATE, updated_at: DEMO_DATE }, imageSrc: img3 },
+];
 
 const posts = ref<Post[]>([]);
 const page = ref(0);
@@ -52,11 +72,20 @@ const limit = 10;
 const isLoading = ref(false);
 const hasMore = ref(true);
 const userId = ref<number>(1);
-
 const isModalOpen = ref(false);
 const selectedPost = ref<Post | null>(null);
 
-const feedContainer = ref<HTMLElement | null>(null);
+const displayCards = computed(() => {
+  if (posts.value.length > 0) {
+    return posts.value.map((post) => ({ post, imageSrc: undefined as string | undefined }));
+  }
+  return demoCards;
+});
+
+function openPost(post: Post) {
+  selectedPost.value = post;
+  isModalOpen.value = true;
+}
 
 async function loadMore() {
   if (isLoading.value || !hasMore.value) return;
@@ -64,9 +93,7 @@ async function loadMore() {
   try {
     const offset = page.value * limit;
     const data = await fetchUserPosts(userId.value, limit, offset);
-    if (data.length < limit) {
-      hasMore.value = false;
-    }
+    if (data.length < limit) hasMore.value = false;
     posts.value.push(...data);
     page.value += 1;
   } catch (e) {
@@ -78,30 +105,15 @@ async function loadMore() {
 }
 
 function handleScroll() {
-  const scrollElement = document.documentElement;
-  const scrollTop = window.scrollY || scrollElement.scrollTop;
-  const viewportHeight = window.innerHeight || scrollElement.clientHeight;
-  const fullHeight = scrollElement.scrollHeight;
-
-  if (fullHeight - (scrollTop + viewportHeight) < 500) {
-    loadMore();
-  }
-}
-
-function openPost(post: Post) {
-  selectedPost.value = post;
-  isModalOpen.value = true;
+  const el = document.documentElement;
+  if (el.scrollHeight - (window.scrollY + el.clientHeight) < 500) loadMore();
 }
 
 onMounted(() => {
   loadMore();
   window.addEventListener("scroll", handleScroll, { passive: true });
 });
-
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
-});
-
+onUnmounted(() => window.removeEventListener("scroll", handleScroll));
 watch(userId, () => {
   posts.value = [];
   page.value = 0;
@@ -109,88 +121,3 @@ watch(userId, () => {
   loadMore();
 });
 </script>
-
-<style scoped>
-.feed-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.feed-header__title {
-  margin: 0 0 0.25rem;
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
-.feed-header__subtitle {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #9ca3af;
-}
-
-.feed-header__controls {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-}
-
-.feed-header__field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.8rem;
-  color: #9ca3af;
-}
-
-.feed-header__field input {
-  padding: 0.3rem 0.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(148, 163, 184, 0.6);
-  background: rgba(15, 23, 42, 0.9);
-  color: #e5e7eb;
-  width: 5rem;
-}
-
-.feed {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.feed__loader,
-.feed__end,
-.feed__empty {
-  text-align: center;
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-  color: #9ca3af;
-}
-
-.spinner {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 999px;
-  border: 2px solid rgba(148, 163, 184, 0.5);
-  border-top-color: #38bdf8;
-  margin-right: 0.5rem;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (max-width: 640px) {
-  .feed-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-</style>
-
