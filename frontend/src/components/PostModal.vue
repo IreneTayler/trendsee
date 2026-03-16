@@ -2,15 +2,15 @@
   <Teleport to="body">
     <!-- Overlay: simple fade in/out -->
     <Transition name="overlay-fade">
-      <div v-if="visible" class="modal-overlay" @click.self="onClose">
+      <div v-if="visible" class="modal-overlay flex h-screen items-stretch justify-end" @click.self="onClose">
         <!-- Panel: distinct slide-in-from-right animation -->
         <Transition name="panel-slide">
-          <div class="modal" v-if="post">
+          <div class="modal h-screen flex flex-col overflow-hidden" v-if="post">
             <button type="button" class="modal__close" aria-label="Закрыть" @click="onClose">
               ✕
             </button>
 
-            <div class="modal__grid">
+            <div class="modal__grid grid h-full flex-1 grid-cols-[300px,1fr] gap-0 p-6">
               <!-- Left column: video + profile + metrics -->
               <div class="modal__left">
                 <div class="post-card__media">
@@ -218,9 +218,12 @@ const descriptionSnippet = computed(() => {
   position: relative;
   height: 100vh;
   width: min(960px, 100vw - 320px);
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   background: #fff;
-  border-radius: 1.25rem;
+  /* Round only top-left corner so panel blends with right/bottom edges */
+  border-radius: 1.25rem 0 0 0;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.2);
 }
 
@@ -252,7 +255,9 @@ const descriptionSnippet = computed(() => {
   grid-template-columns: 300px 1fr;
   gap: 0;
   min-height: 0;
-  padding: 24px;
+  flex: 1 1 auto;
+  /* Slight extra top padding to visually lower inner content */
+  padding: 32px 24px 24px;
 }
 
 @media (max-width: 768px) {
@@ -463,10 +468,10 @@ const descriptionSnippet = computed(() => {
   color: #0f172a;
 }
 
-/* Overlay fade animation */
+/* Overlay fade animation - radial spotlight */
 .overlay-fade-enter-active,
 .overlay-fade-leave-active {
-  transition: opacity 0.25s ease-in-out;
+  transition: opacity 0.35s ease-in-out;
 }
 
 .overlay-fade-enter-from,
@@ -474,18 +479,28 @@ const descriptionSnippet = computed(() => {
   opacity: 0;
 }
 
-/* Panel slide from the right with slight scale */
+/* Panel animation - slide, skew and slight 3D rotate from the right */
 .panel-slide-enter-active {
-  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.3s ease-out;
+  transition:
+    transform 0.4s cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 0.35s ease-out,
+    box-shadow 0.4s ease-out;
 }
 
 .panel-slide-leave-active {
-  transition: transform 0.25s ease-in, opacity 0.25s ease-in;
+  transition:
+    transform 0.3s cubic-bezier(0.55, 0.06, 0.68, 0.19),
+    opacity 0.25s ease-in;
 }
 
-.panel-slide-enter-from,
+.panel-slide-enter-from {
+  transform: translateX(40px) translateZ(0) skewX(-3deg) rotateY(-6deg);
+  opacity: 0;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
 .panel-slide-leave-to {
-  transform: translateX(24px);
+  transform: translateX(24px) translateZ(0) skewX(-2deg) rotateY(-4deg);
   opacity: 0;
 }
 
