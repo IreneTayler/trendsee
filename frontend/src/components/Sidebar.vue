@@ -1,10 +1,30 @@
 <template>
-  <aside class="fixed top-0 left-0 h-screen text-white flex w-64 flex-col bg-[#f4f5f6] px-4 py-5 text-slate-100 ">
+  <button
+    v-if="!isOpen"
+    type="button"
+    class="fixed left-4 top-4 z-40 flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 shadow-md hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-colors"
+    @click="toggleSidebar"
+  >
+    <img
+      :src="iconLeadingLeft"
+      alt="trendsee"
+      class="h-4 w-4 rotate-180"
+    />
+  </button>
+
+  <aside
+    class="fixed top-0 left-0 z-30 flex h-screen w-64 flex-col bg-[#f4f5f6] px-4 py-5 text-slate-100 transition-transform duration-300"
+    :class="isOpen ? 'translate-x-0' : '-translate-x-full'"
+  >
     <div class="mb-4 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <img :src="logoUrl" alt="trendsee" class="h-7 object-contain" />
       </div>
-      <button type="button" class="flex size-[20px] justify-end">
+      <button
+        type="button"
+        class="flex size-[20px] items-center justify-end"
+        @click="toggleSidebar"
+      >
         <img :src="iconLeadingLeft" alt="trendsee" class="size-[15px]" />
       </button>
     </div>
@@ -81,6 +101,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import SidebarGroup from "./SidebarGroup.vue";
 import SidebarItem from "./SidebarItem.vue";
 import logoUrl from "../imgs/Logo full.png";
@@ -91,4 +112,13 @@ import image1 from "../imgs/image1.png";
 import iconLeadingRightMore from "../imgs/Icon_leading_right_more.png";
 import RU from "../imgs/RU.png";
 import iconLeadingDown from "../imgs/Icon_leading_down.png";
+
+const props = defineProps<{ open: boolean }>();
+const emit = defineEmits<{ (e: "update:open", value: boolean): void }>();
+
+const isOpen = computed(() => props.open);
+
+const toggleSidebar = () => {
+  emit("update:open", !props.open);
+};
 </script>

@@ -5,17 +5,28 @@
       <div v-if="visible" class="modal-overlay flex h-screen items-stretch justify-end" @click.self="onClose">
         <!-- Panel: distinct slide-in-from-right animation -->
         <Transition name="panel-slide">
-          <div class="modal h-screen flex flex-col overflow-hidden" v-if="post">
+          <div
+            v-if="post"
+            class="h-screen w-full max-w-[960px] flex flex-col overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.2)] rounded-tl-2xl rounded-bl-2xl"
+          >
             <button type="button" class="modal__close" aria-label="Закрыть" @click="onClose">
               ✕
             </button>
 
-            <div class="modal__grid grid h-full flex-1 grid-cols-[300px,1fr] gap-0 p-6">
+            <div class="grid h-full flex-1 grid-cols-[340px,1fr] gap-0 px-10 py-12">
               <!-- Left column: video + profile + metrics -->
               <div class="modal__left">
-                <div class="post-card__media">
-                  <img v-if="imageSrc" :src="imageSrc" alt="" class="post-card__img" />
-                  <div v-else class="post-card__media-placeholder" />
+                <div class="relative w-[216px] h-[340px]">
+                  <img
+                    v-if="imageSrc"
+                    :src="imageSrc"
+                    alt=""
+                    class="absolute inset-0 h-full w-full rounded-xl object-cover"
+                  />
+                  <div
+                    v-else
+                    class="absolute inset-0 rounded-xl bg-slate-200"
+                  />
                   <div class="post-card__badges post-card__badges--left">
                     <span class="post-card__badge">
                       <span><img :src="socialMediaLogos" alt="trendsee" class="size-[16px]" /> </span>
@@ -214,19 +225,6 @@ const descriptionSnippet = computed(() => {
   backdrop-filter: blur(8px);
 }
 
-.modal {
-  position: relative;
-  height: 100vh;
-  width: min(960px, 100vw - 320px);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: #fff;
-  /* Round only top-left corner so panel blends with right/bottom edges */
-  border-radius: 1.25rem 0 0 0;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.2);
-}
-
 .modal__close {
   position: absolute;
   top: 1rem;
@@ -248,22 +246,6 @@ const descriptionSnippet = computed(() => {
 .modal__close:hover {
   background: #f1f5f9;
   color: #0f172a;
-}
-
-.modal__grid {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 0;
-  min-height: 0;
-  flex: 1 1 auto;
-  /* Slight extra top padding to visually lower inner content */
-  padding: 32px 24px 24px;
-}
-
-@media (max-width: 768px) {
-  .modal__grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .modal__left {
@@ -525,8 +507,8 @@ const descriptionSnippet = computed(() => {
 }
 
 .post-card__badges--left {
-  top: 30px;
-  left: 30px;
+  top: 10px;
+  left: 10px;
 }
 
 .post-card__img {
