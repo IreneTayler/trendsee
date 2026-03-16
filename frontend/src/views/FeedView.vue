@@ -27,8 +27,10 @@
         @click="openPost(post, cardImage)"
         @analyze="openPost"
       />
-      <div v-if="isLoading" class="col-span-full flex items-center justify-center gap-2 text-sm text-slate-500">
-        <span class="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-sky-400" /> Загрузка…
+      <div v-if="isLoading" class="col-span-full flex items-center justify-center gap-3 text-sm text-slate-500">
+        <span class="inline-flex h-9 w-9 animate-spin items-center justify-center rounded-full border-2 border-slate-300 border-t-indigo-500" />
+        <span class="inline-flex h-2 w-20 animate-pulse rounded-full bg-slate-300/70" />
+        <span class="inline-flex h-2 w-10 animate-pulse rounded-full bg-slate-200/70" />
       </div>
       <p v-if="!hasMore && posts.length > 0" class="col-span-full text-center text-xs text-slate-400">Вы дошли до конца ленты.</p>
     </div>
@@ -39,7 +41,9 @@
         <span>⚡</span>
         Найти еще ролики
       </button>
-      <span class="text-sm text-slate-500">Видео: {{ posts.length }} из 3000</span>
+      <span class="text-sm text-slate-500">
+        Видео: {{ posts.length }}<span v-if="totalCount !== null"> из {{ totalCount }}</span>
+      </span>
     </div>
 
     <PostModal :visible="isModalOpen" :post="selectedPost" :image-src="selectedImageSrc" @close="isModalOpen = false" />
@@ -48,7 +52,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
-import { fetchUserPosts, type Post } from "../api";
+import { fetchUserPosts, fetchUserPostCount, type Post } from "../api";
 import PostCard from "../components/PostCard.vue";
 import PostModal from "../components/PostModal.vue";
 import cardImage from "../imgs/image.png";
@@ -58,6 +62,7 @@ const page = ref(0);
 const limit = 10;
 const isLoading = ref(false);
 const hasMore = ref(true);
+const totalCount = ref<number | null>(null);
 const userId = ref<number>(1);
 const isModalOpen = ref(false);
 const selectedPost = ref<Post | null>(null);
@@ -98,10 +103,17 @@ onMounted(() => {
   window.addEventListener("scroll", handleScroll, { passive: true });
 });
 onUnmounted(() => window.removeEventListener("scroll", handleScroll));
-watch(userId, () => {
+watch(userId, async () => {
   posts.value = [];
   page.value = 0;
   hasMore.value = true;
+  totalCount.value = null;
+  if (!userId.value || userId.value < 1) return;
+  try {
+    totalCount.value = await fetchUserPostCount(userId.value);
+  } catch (e) {
+    console.error(e);
+  }
   loadMore();
 });
 </script>

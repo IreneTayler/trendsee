@@ -129,3 +129,6 @@ class PostService:
                 result.append(PostRead.from_orm(post))
         return result
 
+    async def count_user_posts(self, user_id: int) -> int:
+        return await self.repo.count_user_posts(user_id=user_id)
+

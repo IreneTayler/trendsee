@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import Sequence
 
-from sqlalchemy import select, update, delete
+from sqlalchemy import select, update, delete, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..models import Post
@@ -59,4 +59,9 @@ class PostRepository:
         )
         result = await self.session.execute(stmt)
         return list(result.scalars().all())
+
+    async def count_user_posts(self, user_id: int) -> int:
+        stmt = select(func.count()).select_from(Post).where(Post.user_id == user_id)
+        result = await self.session.execute(stmt)
+        return int(result.scalar_one())
 

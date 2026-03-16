@@ -56,6 +56,14 @@ async def list_user_posts(
     return await service.list_user_posts(user_id=user_id, limit=limit, offset=offset)
 
 
+@router.get("/user/{user_id}/count", response_model=int)
+async def count_user_posts(
+    user_id: int,
+    service: PostService = Depends(get_post_service),
+):
+    return await service.count_user_posts(user_id=user_id)
+
+
 @router.get("/{post_id}", response_model=PostRead)
 async def get_post(
     post_id: int,

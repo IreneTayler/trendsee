@@ -14,3 +14,8 @@ export async function fetchUserPosts(userId: number, limit: number, offset: numb
   const { data } = await api.get<Post[]>(`/posts/user/${userId}`, { params: { limit, offset } });
   return data;
 }
+
+export async function fetchUserPostCount(userId: number): Promise<number> {
+  const { data } = await api.get<number>(`/posts/user/${userId}/count`);
+  return data;
+}

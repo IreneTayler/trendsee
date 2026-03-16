@@ -59,11 +59,13 @@
                   </div>
                 </div>
                 <p class="modal__description">
-                  {{ descriptionSnippet }}
+                  {{ isDescriptionExpanded ? props.post?.text : descriptionSnippet }}
                   <div class="flex justify-end">
-                    <button type="button" class="flex items-center">
+                    <button type="button" class="flex items-center" @click="toggleDescription">
                       <img :src="IconleadingDown" alt="" class="size-[12px]"/>
-                      <span class="text-[#171C1F] text-[12px] pl-1">Ещё</span> 
+                      <span class="text-[#171C1F] text-[12px] pl-1">
+                        {{ isDescriptionExpanded ? "Скрыть" : "Ещё" }}
+                      </span>
                     </button>
                   </div>
                 </p>
@@ -135,17 +137,26 @@
                       <img :src="IconLeading" alt="" class="size-[16px]"/>
                       <span> Переведено</span>
                     </div>
-                    <button type="button" class="bg-[#F4F5F6] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full" aria-label="Копировать">
+                    <button
+                      type="button"
+                      class="bg-[#F4F5F6] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full"
+                      aria-label="Копировать"
+                      @click="copyTranscript"
+                    >
                       <img :src="ButtonSecondary" alt="" class="size-[12px]"/>
                     </button>
                   </div>
                 </div>
                 <div class="bg-[#F4F5F6] pt-[16px] pb-[8px] pr-[16px] pl-[18px] rounded-md">
-                  <p class="text-[#4E616B]">{{ post.text }}</p>
+                  <p class="text-[#4E616B]">
+                    {{ isTranscriptExpanded ? post.text : transcriptSnippet }}
+                  </p>
                   <div class="flex justify-end pt-[12px]">
-                    <button type="button" class="flex items-center">
+                    <button type="button" class="flex items-center" @click="toggleTranscript">
                       <img :src="IconleadingDown" alt="" class="size-[12px]"/>
-                      <span class="text-[#171C1F] text-[12px] pl-1">Ещё</span> 
+                      <span class="text-[#171C1F] text-[12px] pl-1">
+                        {{ isTranscriptExpanded ? "Скрыть" : "Ещё" }}
+                      </span>
                     </button>
                   </div>
                 </div>
@@ -172,7 +183,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import type { Post } from "../api";
 import socialMediaLogos from "../imgs/Social media Logos.png";
 import whiteFire from "../imgs/white_fire.png";
@@ -211,6 +222,43 @@ const descriptionSnippet = computed(() => {
   if (!props.post?.text) return "";
   return props.post.text.length > 80 ? props.post.text.slice(0, 80) + "..." : props.post.text;
 });
+
+const transcriptSnippet = computed(() => {
+  if (!props.post?.text) return "";
+  return props.post.text.length > 200 ? props.post.text.slice(0, 200) + "..." : props.post.text;
+});
+
+const isDescriptionExpanded = ref(false);
+const isTranscriptExpanded = ref(false);
+
+const toggleDescription = () => {
+  isDescriptionExpanded.value = !isDescriptionExpanded.value;
+};
+
+const toggleTranscript = () => {
+  isTranscriptExpanded.value = !isTranscriptExpanded.value;
+};
+
+const copyTranscript = async () => {
+  const text = props.post?.text ?? "";
+  if (!text) return;
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    // Fallback: hidden textarea
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand("copy");
+    } finally {
+      document.body.removeChild(textarea);
+    }
+  }
+};
 </script>
 
 <style scoped>
