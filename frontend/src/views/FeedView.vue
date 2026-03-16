@@ -19,7 +19,8 @@
         :key="item.post.id"
         :post="item.post"
         :image-src="item.imageSrc"
-        @click="openPost(item.post)"
+        @click="openPost(item.post, item.imageSrc)"
+        @analyze="openPost"
       />
       <div v-if="isLoading" class="col-span-full flex items-center justify-center gap-2 text-sm text-slate-500">
         <span class="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-sky-400" /> Загрузка…
@@ -36,7 +37,7 @@
       <span class="text-sm text-slate-500">Видео: {{ displayCards.length }} из 3000</span>
     </div>
 
-    <PostModal :visible="isModalOpen" :post="selectedPost" @close="isModalOpen = false" />
+    <PostModal :visible="isModalOpen" :post="selectedPost" :image-src="selectedImageSrc" @close="isModalOpen = false" />
   </section>
 </template>
 
@@ -47,8 +48,8 @@ import PostCard from "../components/PostCard.vue";
 import PostModal from "../components/PostModal.vue";
 
 import img1 from "../imgs/image.png";
-import img2 from "../imgs/image1.png";
-import img3 from "../imgs/Kare.png";
+import img2 from "../imgs/Kare.png";
+import img3 from "../imgs/image1.png";
 
 const CAPTION = "500 000 лайков на ютубе делаем , бля буду скидываю 😂😂";
 const DEMO_DATE = "2025-12-12T12:00:00Z";
@@ -70,6 +71,7 @@ const hasMore = ref(true);
 const userId = ref<number>(1);
 const isModalOpen = ref(false);
 const selectedPost = ref<Post | null>(null);
+const selectedImageSrc = ref<string | undefined>(undefined);
 
 const displayCards = computed(() => {
   if (posts.value.length > 0) {
@@ -78,8 +80,9 @@ const displayCards = computed(() => {
   return demoCards;
 });
 
-function openPost(post: Post) {
+function openPost(post: Post, imageSrc?: string) {
   selectedPost.value = post;
+  selectedImageSrc.value = imageSrc;
   isModalOpen.value = true;
 }
 

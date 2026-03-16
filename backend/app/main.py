@@ -14,8 +14,8 @@ async def on_startup() -> None:
         await conn.run_sync(Base.metadata.create_all)
 
 
-app.include_router(users.router)
-app.include_router(posts.router)
+app.include_router(users.router, prefix="/api")
+app.include_router(posts.router, prefix="/api")
 
 
 @app.get("/health")

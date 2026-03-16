@@ -5,11 +5,11 @@
       <div v-else class="post-card__media-placeholder" />
       <div class="post-card__badges post-card__badges--left">
         <span class="post-card__badge">
-          <span class="post-card__badge-icon"><img :src="socialMediaLogos" alt="trendsee" class="size-[16px]" /> </span> 
+          <span><img :src="socialMediaLogos" alt="trendsee" class="size-[16px]" /> </span> 
           Reels
         </span>
         <span class="post-card__badge">
-          <span class="post-card__badge-icon"><img :src="whiteFire" alt="trendsee" class="size-[16px]" /> </span> 
+          <span><img :src="whiteFire" alt="trendsee" class="h-[16px]" /> </span> 
           X10
         </span>
       </div>
@@ -57,16 +57,17 @@
       <!-- <h2 class="post-card__title">{{ post.title }}</h2> -->
       <p class="post-card__preview">{{ previewText }}</p>
       <p class="post-card__date">{{ formattedDate }}</p>
-      <button type="button" class="post-card__cta" @click.stop="$emit('click')">Анализ</button>
+      <button type="button" class="post-card__cta" @click.stop="$emit('analyze', post, imageSrc)">Анализ</button>
     </div>
   </article>
+  
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 import type { Post } from "../api";
 const props = defineProps<{ post: Post; imageSrc?: string }>();
-defineEmits<{ (e: "click"): void }>();
+defineEmits<{ (e: "analyze", post: Post, imageSrc?: string): void; (e: "click"): void }>();
 const previewText = computed(() => (props.post.text.length > 140 ? props.post.text.slice(0, 140) + "…" : props.post.text));
 const formattedDate = computed(() => new Date(props.post.created_at).toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric" }));
 
@@ -101,9 +102,9 @@ import plus from "../imgs/plus.png";
 .post-card__username { font-size: 14px; font-weight: 600; color: #2b31b3; }
 .post-card__followers { font-size: 12px; color: #4e616b; }
 .post-card__title { margin: 0 0 6px; font-size: 14px; font-weight: 600; color: #0f172a; line-height: 1.3; }
-.post-card__preview { margin: 0 0 8px; font-size: 13px; line-height: 1.45; color: #334155; }
+.post-card__preview { margin: 0 0 8px; font-size: 12px; line-height: 1.45; color: #334155; }
 .post-card__date { margin: 0 0 12px; font-size: 11px; color: #94a3b8; }
-.post-card__cta { width: 100%; padding: 10px 16px; border: none; border-radius: 999px; background: #4338ca; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+.post-card__cta { width: 100%; padding: 10px 16px; border: none; border-radius: 12px; background: #4338ca; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
 .post-card__cta:hover { background: #3730a3; }
 
 </style>
