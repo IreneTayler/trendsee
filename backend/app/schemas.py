@@ -22,7 +22,7 @@ class UserRead(UserBase):
     updated_at: datetime
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 
 class Token(BaseModel):
@@ -51,5 +51,5 @@ class PostRead(PostBase):
     updated_at: datetime
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 

@@ -10,7 +10,8 @@ class UserService:
     async def create_user(self, data: UserCreate) -> tuple[UserRead, str]:
         user = await self.repo.create_user(name=data.name)
         token = create_access_token({"sub": str(user.id)})
-        return UserRead.model_validate(user), token
+        # Pydantic v1: use from_orm (enabled via from_attributes = True)
+        return UserRead.from_orm(user), token
 
     async def get_user_token(self, user_id: int) -> str:
         # просто генерируем JWT по id пользователя (для тестирования)
@@ -20,7 +21,7 @@ class UserService:
         user = await self.repo.update_user_name(user_id, data.name)
         if not user:
             return None
-        return UserRead.model_validate(user)
+        return UserRead.from_orm(user)
 
     async def delete_user(self, user_id: int) -> None:
         await self.repo.delete_user(user_id)
