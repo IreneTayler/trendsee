@@ -1,8 +1,7 @@
 <template>
   <article class="post-card cursor-pointer overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md" @click="$emit('click')">
     <div class="post-card__media">
-      <img v-if="imageSrc" :src="imageSrc" alt="" class="post-card__img" />
-      <div v-else class="post-card__media-placeholder" />
+      <img :src="resolvedImageSrc" alt="" class="post-card__img" />
       <div class="post-card__badges post-card__badges--left">
         <span class="post-card__badge">
           <span><img :src="socialMediaLogos" alt="trendsee" class="size-[16px]" /> </span> 
@@ -54,7 +53,7 @@
           <img :src="plus" alt=""  />          
         </div>
       </div>
-      <!-- <h2 class="post-card__title">{{ post.title }}</h2> -->
+      <h2 class="post-card__title">{{ post.title }}</h2>
       <p class="post-card__preview">{{ previewText }}</p>
       <p class="post-card__date">{{ formattedDate }}</p>
       <button type="button" class="post-card__cta" @click.stop="$emit('analyze', post, imageSrc)">Анализ</button>
@@ -68,9 +67,15 @@ import { computed } from "vue";
 import type { Post } from "../api";
 const props = defineProps<{ post: Post; imageSrc?: string }>();
 defineEmits<{ (e: "analyze", post: Post, imageSrc?: string): void; (e: "click"): void }>();
-const previewText = computed(() => (props.post.text.length > 140 ? props.post.text.slice(0, 140) + "…" : props.post.text));
-const formattedDate = computed(() => new Date(props.post.created_at).toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric" }));
+const previewText = computed(() => {
+  const base = props.post.text && props.post.text.trim().length > 0 ? props.post.text : props.post.title;
+  return base.length > 140 ? base.slice(0, 140) + "…" : base;
+});
+const formattedDate = computed(() =>
+  new Date(props.post.created_at).toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric" }),
+);
 
+const resolvedImageSrc = computed(() => props.imageSrc ?? cardImage);
 
 import socialMediaLogos from "../imgs/Social media Logos.png";
 import whiteFire from "../imgs/white_fire.png";
@@ -80,6 +85,7 @@ import eye from "../imgs/eye.png";
 import comments from "../imgs/Comments.png";
 import shares from "../imgs/Shares.png";
 import image1 from "../imgs/image1.png";
+import cardImage from "../imgs/image.png";
 import incognitoMode from "../imgs/Incognito_mode.png";
 import plus from "../imgs/plus.png";
 </script>

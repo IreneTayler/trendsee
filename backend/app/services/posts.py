@@ -54,7 +54,7 @@ class PostService:
         # Кладём в Redis с TTL в 10 минут (горячий период)
         await self.redis.hset(_post_cache_key(post.id), mapping=serialized)
         await self.redis.expire(_post_cache_key(post.id), HOT_PERIOD_MINUTES * 60)
-        return PostRead.model_validate(post)
+        return PostRead.from_orm(post)
 
     async def update_post(self, post_id: int, data: PostUpdate) -> PostRead | None:
         post = await self.repo.get_post(post_id)
@@ -72,7 +72,7 @@ class PostService:
         serialized = await self._serialize_post(updated)
         await self.redis.hset(_post_cache_key(updated.id), mapping=serialized)
         await self.redis.expire(_post_cache_key(updated.id), HOT_PERIOD_MINUTES * 60)
-        return PostRead.model_validate(updated)
+        return PostRead.from_orm(updated)
 
     async def delete_post(self, post_id: int) -> None:
         await self.repo.delete_post(post_id)
@@ -96,11 +96,11 @@ class PostService:
             serialized = await self._serialize_post(post)
             await self.redis.hset(cache_key, mapping=serialized)
             await self.redis.expire(cache_key, HOT_PERIOD_MINUTES * 60)
-            return PostRead.model_validate(post)
+            return PostRead.from_orm(post)
 
         # Пост не горячий - имитируем нагрузку
         await asyncio.sleep(2)
-        return PostRead.model_validate(post)
+        return PostRead.from_orm(post)
 
     async def list_user_posts(
         self,
@@ -122,10 +122,10 @@ class PostService:
                     serialized = await self._serialize_post(post)
                     await self.redis.hset(cache_key, mapping=serialized)
                     await self.redis.expire(cache_key, HOT_PERIOD_MINUTES * 60)
-                    result.append(PostRead.model_validate(post))
+                    result.append(PostRead.from_orm(post))
             else:
                 # для старых — читаем из БД и разово спим
                 await asyncio.sleep(2)
-                result.append(PostRead.model_validate(post))
+                result.append(PostRead.from_orm(post))
         return result
 
