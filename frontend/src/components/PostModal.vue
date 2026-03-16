@@ -1,8 +1,10 @@
 <template>
   <Teleport to="body">
-    <Transition name="fade">
+    <!-- Overlay: simple fade in/out -->
+    <Transition name="overlay-fade">
       <div v-if="visible" class="modal-overlay" @click.self="onClose">
-        <Transition name="slide-up">
+        <!-- Panel: distinct slide-in-from-right animation -->
+        <Transition name="panel-slide">
           <div class="modal" v-if="post">
             <button type="button" class="modal__close" aria-label="Закрыть" @click="onClose">
               ✕
@@ -47,7 +49,12 @@
                 </div>
                 <p class="modal__description">
                   {{ descriptionSnippet }}
-                  <button type="button" class="modal__more">Ещё ▾</button>
+                  <div class="flex justify-end">
+                    <button type="button" class="flex items-center">
+                      <img :src="IconleadingDown" alt="" class="size-[12px]"/>
+                      <span class="text-[#171C1F] text-[12px] pl-1">Ещё</span> 
+                    </button>
+                  </div>
                 </p>
                 <ul class="modal__metrics">
                   <li
@@ -90,39 +97,56 @@
                   <h2 class="modal__title">{{ post.title }}</h2>
                 </div>
                 <div class="flex">
-                  <div class="flex">
+                  <div class="flex bg-[#F1F3F5] rounded-3xl pt-[6px] pb-[6px] pl-[12px] pr-[12px]">
                     <img :src="music" alt="" class="size-[16px]"/>
-                    <span class="color-[#343A40] text-xs pl-5">Tyga — Pop it off</span>
+                    <span class="color-[#343A40] text-xs pl-3">Tyga — Pop it off</span>
                   </div>
                   <div class="flex pl-20">
                     <span class="color-[#343A40] text-xs"> Язык:</span>                
-                    <img :src="TrendSourceIcon" alt="" class="size-[16px] pl-5"/>
-                    <span class="color-[#343A40] text-xs pl-5"> Английский</span>
+                    <img :src="TrendSourceIcon" alt="" class="size-[16px] ml-2"/>
+                    <span class="color-[#343A40] text-xs pl-2"> Английский</span>
                   </div>
                 </div>
                 <div class="modal__tags">
-                  <span class="modal__tag modal__tag--blue">Туториал</span>
-                  <span class="modal__tag modal__tag--green">Энергичное видео</span>
-                  <span class="modal__tag modal__tag--orange">Изи монтаж</span>
-                  <span class="modal__tag modal__tag--red">Трендовый звук</span>
-                  <span class="modal__tag modal__tag--orange">Лид магнит</span>
-                  <span class="modal__tag modal__tag--purple">Красота и здоровье</span>
+                  <span class="bg-[#D5D6F8] text-[#333CD3] text-[14px] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full">Туториал</span>
+                  <span class="bg-[#E1F7D8] text-[#1E6D00] text-[14px] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full">Энергичное видео</span>
+                  <span class="bg-[#FFF0CB] text-[#9E3F00] text-[14px] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full">Изи монтаж</span>
+                  <span class="bg-[#FFECF1] text-[#BF0031] text-[14px] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full">Трендовый звук</span>
+                  <span class="bg-[#FFF0CB] text-[#9E3F00] text-[14px] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full">Лид магнит</span>
+                  <span class="bg-[#D5D6F8] text-[#2B31B3] text-[14px] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full">Красота и здоровье</span>
                 </div>
-                <div class="modal__transcript">
-                  <div class="modal__transcript-head">
-                    <h3 class="modal__transcript-title">Транскрибация</h3>
-                    <span class="modal__transcript-badge">Переведено</span>
-                    <button type="button" class="modal__copy" aria-label="Копировать">⎘</button>
+                <div class="h-[32px] flex justify-between">
+                  <div>
+                    <h3 class="color-black font-semibold p-[8px] text-[16px]">Транскрибация</h3>
                   </div>
-                  <p class="modal__transcript-text">{{ post.text }}</p>
-                  <button type="button" class="modal__more">Ещё ▾</button>
+                  <div class="flex">
+                    <div  class="bg-[#F4F5F6] text-[#2B31B3] text-[14px] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full flex items-center">
+                      <img :src="IconLeading" alt="" class="size-[16px]"/>
+                      <span> Переведено</span>
+                    </div>
+                    <button type="button" class="bg-[#F4F5F6] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full" aria-label="Копировать">
+                      <img :src="ButtonSecondary" alt="" class="size-[12px]"/>
+                    </button>
+                  </div>
                 </div>
-                <button type="button" class="modal__adapt">
-                  <span>✨</span> Адаптировать
+                <div class="bg-[#F4F5F6] pt-[16px] pb-[8px] pr-[16px] pl-[18px] rounded-md">
+                  <p class="text-[#4E616B]">{{ post.text }}</p>
+                  <div class="flex justify-end pt-[12px]">
+                    <button type="button" class="flex items-center">
+                      <img :src="IconleadingDown" alt="" class="size-[12px]"/>
+                      <span class="text-[#171C1F] text-[12px] pl-1">Ещё</span> 
+                    </button>
+                  </div>
+                </div>
+                <button type="button" class="flex justify-evenly items-center bg-[#2B31B3] w-[220px] h-[56px] rounded-xl p-[16px]">
+                  <span>
+                      <img :src="primary" alt="" class="size-[24px]"/>
+                  </span> 
+                  <span class="text-[#ffffff] text-[#18px]">Адаптировать</span>                   
                 </button>
                 <div class="modal__essence">
                   <h3 class="modal__essence-title">Суть</h3>
-                  <p class="modal__essence-text">
+                  <p class="bg-[#F4F5F6] p-[16px] rounded-md text-[#4E616B]">
                     Разбор состава/логики: он в человеческих словах переводит состав/механику («что реально делает Х»),
                     называет 2-3 работающих активных компонента и 2-3 маркетинговых «пустых» обещания.
                   </p>
@@ -151,6 +175,10 @@ import orangeShares from "../imgs/orange_shares.png";
 import er_label from "../imgs/er_label.png";
 import music from "../imgs/music.png";
 import TrendSourceIcon from "../imgs/Trend Source Icon.png";
+import IconLeading from "../imgs/Icon Leading (1).png";
+import ButtonSecondary from "../imgs/Button Secondary.png";
+import IconleadingDown from "../imgs/Icon_leading_down.png";
+import primary from "../imgs/primary.png";
 
 
 const props = defineProps<{ visible: boolean; imageSrc?: string; post: Post | null }>();
@@ -180,19 +208,16 @@ const descriptionSnippet = computed(() => {
   inset: 0;
   z-index: 50;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: flex-end;
   background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(8px);
-  padding: 1.5rem;
-  overflow-y: auto;
 }
 
 .modal {
   position: relative;
-  width: 100%;
-  max-width: 960px;
-  max-height: calc(100vh - 3rem);
+  height: 100vh;
+  width: min(960px, 100vw - 320px);
   overflow-y: auto;
   background: #fff;
   border-radius: 1.25rem;
@@ -224,7 +249,7 @@ const descriptionSnippet = computed(() => {
 
 .modal__grid {
   display: grid;
-  grid-template-columns: minmax(0, 340px) 1fr;
+  grid-template-columns: 300px 1fr;
   gap: 0;
   min-height: 0;
   padding: 24px;
@@ -241,7 +266,8 @@ const descriptionSnippet = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 216px;
+  width: 100%;
+  max-width: 220px;
 }
 
 .modal__video-wrap {
@@ -349,15 +375,6 @@ const descriptionSnippet = computed(() => {
   color: #334155;
 }
 
-.modal__more {
-  margin-left: 0.25rem;
-  padding: 0;
-  border: none;
-  background: none;
-  color: #4338ca;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
 
 .modal__metrics {
   list-style: none;
@@ -398,7 +415,7 @@ const descriptionSnippet = computed(() => {
 
 /* Right column */
 .modal__right {
-  padding: 1.5rem 1.5rem 1.5rem 1.25rem;
+  padding: 1.25rem 1.5rem 1.25rem 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -426,49 +443,10 @@ const descriptionSnippet = computed(() => {
   gap: 0.35rem;
 }
 
-.modal__tag {
-  padding: 0.25rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.modal__tag--blue {
-  background: #dbeafe;
-  color: #1d4ed8;
-}
-
-.modal__tag--green {
-  background: #dcfce7;
-  color: #15803d;
-}
-
-.modal__tag--orange {
-  background: #ffedd5;
-  color: #c2410c;
-}
-
-.modal__tag--red {
-  background: #ffe4e6;
-  color: #be123c;
-}
-
-.modal__tag--purple {
-  background: #f3e8ff;
-  color: #6b21a8;
-}
-
 .modal__transcript {
   padding: 0.75rem 1rem;
   background: #f8fafc;
   border-radius: 0.75rem;
-}
-
-.modal__transcript-head {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
 }
 
 .modal__transcript-title {
@@ -478,51 +456,6 @@ const descriptionSnippet = computed(() => {
   color: #0f172a;
 }
 
-.modal__transcript-badge {
-  font-size: 0.7rem;
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
-  background: #dcfce7;
-  color: #15803d;
-}
-
-.modal__copy {
-  margin-left: auto;
-  border: none;
-  background: none;
-  color: #64748b;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.modal__transcript-text {
-  margin: 0 0 0.5rem;
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: #334155;
-  white-space: pre-wrap;
-}
-
-.modal__adapt {
-  width: 100%;
-  padding: 0.75rem 1.25rem;
-  border: none;
-  border-radius: 0.75rem;
-  background: #4338ca;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.modal__adapt:hover {
-  background: #3730a3;
-}
-
 .modal__essence-title {
   margin: 0 0 0.5rem;
   font-size: 0.95rem;
@@ -530,31 +463,29 @@ const descriptionSnippet = computed(() => {
   color: #0f172a;
 }
 
-.modal__essence-text {
-  margin: 0;
-  font-size: 0.85rem;
-  line-height: 1.55;
-  color: #475569;
+/* Overlay fade animation */
+.overlay-fade-enter-active,
+.overlay-fade-leave-active {
+  transition: opacity 0.25s ease-in-out;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
+.overlay-fade-enter-from,
+.overlay-fade-leave-to {
   opacity: 0;
 }
 
-.slide-up-enter-active,
-.slide-up-leave-active {
-  transition: transform 0.25s ease, opacity 0.25s ease;
+/* Panel slide from the right with slight scale */
+.panel-slide-enter-active {
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.3s ease-out;
 }
 
-.slide-up-enter-from,
-.slide-up-leave-to {
-  transform: translateY(16px);
+.panel-slide-leave-active {
+  transition: transform 0.25s ease-in, opacity 0.25s ease-in;
+}
+
+.panel-slide-enter-from,
+.panel-slide-leave-to {
+  transform: translateX(24px);
   opacity: 0;
 }
 
@@ -563,6 +494,7 @@ const descriptionSnippet = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  height: 28px;
 }
 
 .post-card__badge {
@@ -578,8 +510,8 @@ const descriptionSnippet = computed(() => {
 }
 
 .post-card__badges--left {
-  top: 34px;
-  left: 34px;
+  top: 30px;
+  left: 30px;
 }
 
 .post-card__img {
