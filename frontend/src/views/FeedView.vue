@@ -76,7 +76,13 @@
       </button>
     </div>
 
-    <PostModal :visible="isModalOpen" :post="selectedPost" :image-src="selectedImageSrc" @close="isModalOpen = false" />
+    <PostModal
+      :visible="isModalOpen"
+      :post="selectedPost"
+      :image-src="selectedImageSrc"
+      :loading="isPostRevealLoading"
+      @close="isModalOpen = false"
+    />
   </section>
 </template>
 
@@ -97,11 +103,18 @@ const userId = ref<number>(1);
 const isModalOpen = ref(false);
 const selectedPost = ref<Post | null>(null);
 const selectedImageSrc = ref<string | undefined>(undefined);
+const isPostRevealLoading = ref(false);
 
 function openPost(post: Post, imageSrc?: string) {
-  selectedPost.value = post;
-  selectedImageSrc.value = imageSrc;
   isModalOpen.value = true;
+  isPostRevealLoading.value = true;
+  selectedPost.value = null;
+  selectedImageSrc.value = imageSrc;
+  // Give a short, intentional reveal animation (improves perceived performance)
+  window.setTimeout(() => {
+    selectedPost.value = post;
+    isPostRevealLoading.value = false;
+  }, 220);
 }
 
 async function loadMore() {

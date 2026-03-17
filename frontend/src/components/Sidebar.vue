@@ -69,7 +69,7 @@
       <div class="flex justify-between">
         <div class="flex">
           <img :src="Fire" alt="trendsee" class="h-[24px] w-[24px]" />
-          <p class="mb-1 text-sm font-bold italic text-[#4e616b]">Токены</p>
+          <p class="mb-1 text-sm font-bold italic text-[#000000]">Токены</p>
         </div>
         <p class="text-sm text-[#4e616b]">1 245 / 4 497</p>
       </div>

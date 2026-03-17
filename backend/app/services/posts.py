@@ -4,12 +4,14 @@ from typing import Sequence
 
 from redis.asyncio import Redis
 
+from ..core.config import get_settings
 from ..models import Post
 from ..repositories.posts import PostRepository
 from ..schemas import PostCreate, PostRead, PostUpdate
 
 
 HOT_PERIOD_MINUTES = 10
+settings = get_settings()
 
 
 def _post_cache_key(post_id: int) -> str:
@@ -98,8 +100,9 @@ class PostService:
             await self.redis.expire(cache_key, HOT_PERIOD_MINUTES * 60)
             return PostRead.from_orm(post)
 
-        # Пост не горячий - имитируем нагрузку
-        await asyncio.sleep(2)
+        # Пост не горячий - опционально имитируем нагрузку (по умолчанию выключено)
+        if settings.cold_delay_seconds > 0:
+            await asyncio.sleep(settings.cold_delay_seconds)
         return PostRead.from_orm(post)
 
     async def list_user_posts(
@@ -124,8 +127,9 @@ class PostService:
                     await self.redis.expire(cache_key, HOT_PERIOD_MINUTES * 60)
                     result.append(PostRead.from_orm(post))
             else:
-                # для старых — читаем из БД и разово спим
-                await asyncio.sleep(2)
+                # для старых — читаем из БД (опциональная задержка выключена по умолчанию)
+                if settings.cold_delay_seconds > 0:
+                    await asyncio.sleep(settings.cold_delay_seconds)
                 result.append(PostRead.from_orm(post))
         return result
 

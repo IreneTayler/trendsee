@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from fastapi import FastAPI
+from sqlalchemy import text
 
 from .api import users, posts
 from .db import Base, engine
@@ -19,6 +20,11 @@ async def on_startup() -> None:
         try:
             async with engine.begin() as conn:
                 await conn.run_sync(Base.metadata.create_all)
+                # No Alembic in this project: ensure key indexes exist even on an already-initialized DB.
+                await conn.execute(text("CREATE INDEX IF NOT EXISTS ix_posts_user_id ON posts (user_id)"))
+                await conn.execute(
+                    text("CREATE INDEX IF NOT EXISTS ix_posts_user_created ON posts (user_id, created_at DESC)")
+                )
             logger.info("Database ready, tables created.")
             return
         except Exception as e:

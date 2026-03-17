@@ -16,6 +16,9 @@ class Settings(BaseSettings):
 
     redis_url: AnyUrl | None = None
 
+    # Optional artificial delay for "cold" (non-cached) data. Keep 0 for real speed.
+    cold_delay_seconds: float = 0.0
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

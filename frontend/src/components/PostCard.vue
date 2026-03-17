@@ -31,7 +31,9 @@
       <!-- Bottom metrics -->
       <div class="absolute bottom-2.5 left-2.5 right-2.5 flex justify-between rounded-xl bg-black/30 px-4 py-2 text-xs text-white backdrop-blur-md">
         <div class="flex-col items-center gap-1.5">
-          <img :src="eye" alt="" />
+          <div class="size-5">
+            <img :src="eye" alt="" />
+          </div>          
           <span>105k</span>
         </div>
         <div class="flex-col items-center gap-1.5">

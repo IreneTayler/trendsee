@@ -6,8 +6,8 @@
         <!-- Panel: distinct slide-in-from-right animation -->
         <Transition name="panel-slide">
           <div
-            v-if="post"
-            class="modal__panel h-screen w-full max-w-[960px] flex flex-col overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.2)] rounded-tl-2xl rounded-bl-2xl"
+            v-if="visible"
+            class="modal__panel h-screen w-full max-w-[960px] flex flex-col overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.2)] rounded-2xl"
             :class="{ 'modal__panel--dragging': isPanelDragging }"
             :style="panelVars"
             @mousedown="onPanelMouseDown"
@@ -19,6 +19,28 @@
 
             <!-- Single scroll area: top card + protruding bottom panel -->
             <div class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pt-12 pb-12">
+              <!-- Reveal loading skeleton -->
+              <div v-if="props.loading || !post" class="px-10">
+                <div class="grid grid-cols-[340px,1fr] gap-0">
+                  <div class="w-full max-w-[220px] space-y-4">
+                    <div class="h-[340px] w-[216px] rounded-xl bg-slate-200 overflow-hidden relative">
+                      <div class="absolute inset-0 animate-pulse bg-slate-300/60" />
+                    </div>
+                    <div class="h-4 w-32 rounded bg-slate-200 animate-pulse" />
+                    <div class="h-10 w-full rounded-xl bg-slate-200 animate-pulse" />
+                    <div class="h-24 w-full rounded-xl bg-slate-100 animate-pulse" />
+                  </div>
+                  <div class="pl-6 pr-6 py-5 space-y-4">
+                    <div class="h-4 w-24 rounded bg-slate-200 animate-pulse" />
+                    <div class="h-7 w-[70%] rounded bg-slate-200 animate-pulse" />
+                    <div class="h-10 w-full rounded-xl bg-slate-100 animate-pulse" />
+                    <div class="h-40 w-full rounded-xl bg-slate-100 animate-pulse" />
+                    <div class="h-14 w-[220px] rounded-xl bg-indigo-200/60 animate-pulse" />
+                  </div>
+                </div>
+              </div>
+
+              <template v-else>
               <!-- Top block: main card (video, tags, transcript, button) -->
               <div class="grid min-h-0 grid-cols-[340px,1fr] gap-0 px-10 pb-0">
               <!-- Left column: video + profile + metrics -->
@@ -74,7 +96,12 @@
                       <p class="modal__description-text">{{ isDescriptionExpanded ? props.post?.text : descriptionSnippet }}</p>
                       <div class="flex justify-end">
                         <button type="button" class="flex items-center" @click="toggleDescription">
-                          <img :src="IconleadingDown" alt="" class="size-[12px]"/>
+                          <img
+                            :src="IconleadingDown"
+                            alt=""
+                            class="size-[12px] transition-transform duration-200"
+                            :class="isDescriptionExpanded ? 'rotate-180' : 'rotate-0'"
+                          />
                           <span class="text-[#171C1F] text-[12px] pl-1">
                             {{ isDescriptionExpanded ? "Скрыть" : "Ещё" }}
                           </span>
@@ -172,7 +199,12 @@
                       </p>
                       <div class="flex justify-end">
                         <button type="button" class="flex items-center" @click="toggleTranscript">
-                          <img :src="IconleadingDown" alt="" class="size-[12px]"/>
+                          <img
+                            :src="IconleadingDown"
+                            alt=""
+                            class="size-[12px] transition-transform duration-200"
+                            :class="isTranscriptExpanded ? 'rotate-180' : 'rotate-0'"
+                          />
                           <span class="text-[#171C1F] text-[12px] pl-1">
                             {{ isTranscriptExpanded ? "Скрыть" : "Ещё" }}
                           </span>
@@ -192,32 +224,42 @@
                 <div class="gap-0 border-t border-slate-200 bg-white pt-4 pb-8">
                   <div class="min-w-0 space-y-8">
                     <!-- Суть -->
-                    <section>
-                      <div class="flex items-center gap-2 mb-2">
-                        <h3 class="text-slate-900 font-bold text-lg">Суть</h3>
+                    <section class="">
+                      <div class="flex items-center justify-between gap-3 px-5 pt-5">
+                        <div class="flex items-center gap-2">
+                          <h3 class="text-slate-900 font-bold text-lg">Суть</h3>
+                        </div>
+                        <button type="button" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" aria-label="Копировать">
+                          <img :src="ButtonSecondary" alt="" class="size-[14px]" />
+                        </button>
                       </div>
-                      <div class="bg-[#F4F5F6] p-4 rounded-xl text-[#4E616B] text-sm leading-relaxed">
+                      <div class="px-5 pb-5 pt-3 text-sm leading-relaxed text-[#4E616B]  bg-[#F4F5F6]">
                         Разбор состава/логики: он в человеческих словах переводит состав/механику («что реально делает Х»),
                         называет 2-3 работающих активных компонента и 2-3 маркетинговых «пустых» обещания.
                       </div>
                     </section>
 
                     <!-- Структура -->
-                    <section>
-                      <h3 class="text-slate-900 font-bold text-lg mb-4">Структура</h3>
-                      <div class="bg-[#F4F5F6] rounded-xl p-4 space-y-0">
+                    <section class="">
+                      <div class="flex items-center justify-between gap-3 px-5 pt-5">
+                        <div class="flex items-center gap-2">
+                          <h3 class="text-slate-900 font-bold text-lg">Структура</h3>
+                        </div>
+                      </div>
+                      <div class="px-5 pb-5 pt-3">
+                      <div class="rounded-xl p-4 space-y-0">
                         <div class="flex gap-4">
                           <div class="flex flex-col items-center">
-                            <div class="flex items-start gap-2 w-[96px]">
+                            <div class="flex items-start gap-2 w-[76px]">
                               <span class="text-slate-400 text-xs mt-0.5">
                                 <img :src="iconTime" alt="" class="size-[16px]"/>
                               </span>
                               <span class="text-slate-400 text-xs whitespace-nowrap">0-3 сек</span>
-                            </div>
-                            <div>
-                              <img :src="Ellipse1" alt="" class="size-[16px]"/>
-                              <img :src="StepTimeIcon" alt="" class="ml-[7px]"/>
-                            </div>
+                            </div>                           
+                          </div>
+                          <div>
+                            <img :src="Ellipse1" alt="" class="size-[16px]"/>
+                            <img :src="StepTimeIcon" alt="" class="ml-[7px]"/>
                           </div>
                           <div class="flex-1 pb-4">
                             <p class="font-semibold text-slate-900 text-sm">Шок-сравнение</p>
@@ -227,16 +269,16 @@
                         
                          <div class="flex gap-4">
                           <div class="flex flex-col items-center">
-                            <div class="flex items-start gap-2 w-[96px]">
+                            <div class="flex items-start gap-2 w-[76px]">
                               <span class="text-slate-400 text-xs mt-0.5">
                                 <img :src="iconTime" alt="" class="size-[16px]"/>
                               </span>
                               <span class="text-slate-400 text-xs whitespace-nowrap">3-15 сек</span>
                             </div>
-                            <div>
-                              <img :src="Ellipse2" alt="" class="size-[16px]"/>
-                              <img :src="StepTimeIcon" alt="" class="ml-[7px]"/>
-                            </div>
+                          </div>
+                          <div>
+                            <img :src="Ellipse2" alt="" class="size-[16px]"/>
+                            <img :src="StepTimeIcon" alt="" class="ml-[7px]"/>
                           </div>
                           <div class="flex-1 pb-4">
                             <p class="font-semibold text-slate-900 text-sm">Сюжет</p>
@@ -246,15 +288,15 @@
 
                          <div class="flex gap-4">
                           <div class="flex flex-col items-center">
-                            <div class="flex items-start gap-2 w-[96px]">
+                            <div class="flex items-start gap-2 w-[76px]">
                               <span class="text-slate-400 text-xs mt-0.5">
                                 <img :src="iconTime" alt="" class="size-[16px]"/>
                               </span>
                               <span class="text-slate-400 text-xs whitespace-nowrap">15-120 сек</span>
                             </div>
-                            <div>
-                              <img :src="Ellipse3" alt="" class="size-[16px]"/>
-                            </div>
+                          </div>
+                          <div>
+                            <img :src="Ellipse3" alt="" class="size-[16px]"/>
                           </div>
                           <div class="flex-1 pb-4">
                             <p class="font-semibold text-slate-900 text-sm">Финал / СТА</p>
@@ -262,10 +304,18 @@
                           </div>
                         </div>
                       </div>
+                      </div>
                     </section>
 
-                    <!-- Хук фраза, Визуальный хук, Текстовый хук -->
-                    <section class="bg-[#F4F5F6] rounded-xl p-4 space-y-4">
+                    <!-- Хуки -->
+                    <section class="">
+                      <div class="flex items-center justify-between gap-3 px-5 pt-5">
+                        <div class="flex items-center gap-2">
+                          <h3 class="text-slate-900 font-bold text-lg">Хуки</h3>
+                        </div>
+                      </div>
+                      <div class="px-5 pb-5 pt-3">
+                      <div class="bg-[#F4F5F6] rounded-xl p-4 space-y-4">
                       <div class="flex items-start justify-between gap-3">
                         <div>
                           <p class="font-bold text-slate-900 text-sm">Хук фраза</p>
@@ -289,14 +339,21 @@
                         </div>
                         <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать"> <img :src="ButtonSecondary" alt="" class="size-[12px]"/></button>
                       </div>
+                      </div>
+                      </div>
                     </section>
 
                     <!-- Рабочие приемы -->
-                    <section>
-                      <div class="flex items-center justify-between gap-3 mb-3">
-                        <h3 class="text-slate-900 font-bold text-lg">Рабочие приемы</h3>
-                        <button type="button" class="p-1.5 rounded hover:bg-slate-100 text-slate-500" aria-label="Копировать"> <img :src="ButtonSecondary" alt="" class="size-[12px]"/></button>
+                    <section class="">
+                      <div class="flex items-center justify-between gap-3 px-5 pt-5">
+                        <div class="flex items-center gap-2">
+                          <h3 class="text-slate-900 font-bold text-lg">Рабочие приемы</h3>
+                        </div>
+                        <button type="button" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" aria-label="Копировать">
+                          <img :src="ButtonSecondary" alt="" class="size-[14px]" />
+                        </button>
                       </div>
+                      <div class="px-5 pb-5 pt-3">
                       <div class="space-y-6 text-sm rounded-xl bg-[#F4F5F6] p-4">
                         <div>
                           <p class="font-semibold text-slate-900">2. Суть видео</p>
@@ -318,11 +375,20 @@
                           <p class="text-[#4E616B] mt-2">Почему сработало: персонализация без долгого объяснения = удержание.</p>
                         </div>
                       </div>
+                      </div>
                     </section>
 
                     <!-- Воронка / Маркетинг -->
-                    <section>
-                      <h3 class="text-slate-900 font-bold text-lg mb-3">Воронка / Маркетинг</h3>
+                    <section class="">
+                      <div class="flex items-center justify-between gap-3 px-5 pt-5">
+                        <div class="flex items-center gap-2">
+                          <h3 class="text-slate-900 font-bold text-lg">Воронка / Маркетинг</h3>
+                        </div>
+                        <button type="button" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" aria-label="Копировать">
+                          <img :src="ButtonSecondary" alt="" class="size-[14px]" />
+                        </button>
+                      </div>
+                      <div class="px-5 pb-5 pt-3">
                       <div class="space-y-5 rounded-xl bg-[#F4F5F6] p-4 text-sm text-[#4E616B]">
                         <div>
                           <p class="font-semibold text-slate-900">CTA голос/визуал</p>
@@ -349,11 +415,13 @@
                           </p>
                         </div>
                       </div>
+                      </div>
                     </section>
                   </div>
                 </div>
               </div>
             </div>
+              </template>
 
            
             </div>
@@ -390,7 +458,7 @@ import Ellipse3 from "../imgs/Ellipse 1 (2).png";
 import StepTimeIcon from "../imgs/Step Time Icon.png";
 
 
-const props = defineProps<{ visible: boolean; imageSrc?: string; post: Post | null }>();
+const props = defineProps<{ visible: boolean; imageSrc?: string; post: Post | null; loading?: boolean }>();
 const emit = defineEmits<{ (e: "close"): void }>();
 
 const onClose = () => emit("close");
