@@ -22,7 +22,7 @@
               <!-- Top block: main card (video, tags, transcript, button) -->
               <div class="grid min-h-0 grid-cols-[340px,1fr] gap-0 px-10 pb-0">
               <!-- Left column: video + profile + metrics -->
-              <div class="modal__left sticky top-0 self-start">
+              <div class="flex w-full max-w-[220px] flex-col gap-2 bg-white sticky top-0 self-start">
                 <div class="relative w-[216px] h-[340px]">
                   <img
                     v-if="imageSrc"
@@ -118,10 +118,10 @@
               </div>
 
               <!-- Right column: topic, tags, transcript, adapt, essence -->
-              <div class="modal__right">
+              <div class="flex flex-col gap-4 px-6 py-5">
                 <div class="modal__topic">
-                  <p class="modal__topic-label">Тема видео</p>
-                  <h2 class="modal__title">{{ post.title }}</h2>
+                  <p class="mb-1 text-[14px] tracking-wider text-[#4E616B]">Тема видео</p>
+                  <h2 class="text-[24px] font-semibold text-black">{{ post.title }}</h2>
                 </div>
                 <div class="flex">
                   <div class="flex bg-[#F1F3F5] rounded-3xl pt-[6px] pb-[6px] pl-[12px] pr-[12px]">
@@ -134,7 +134,7 @@
                     <span class="color-[#343A40] text-xs pl-2"> Английский</span>
                   </div>
                 </div>
-                <div class="modal__tags">
+                <div class="flex flex-wrap gap-1.5">
                   <span class="bg-[#D5D6F8] text-[#333CD3] text-[14px] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full">Туториал</span>
                   <span class="bg-[#E1F7D8] text-[#1E6D00] text-[14px] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full">Энергичное видео</span>
                   <span class="bg-[#FFF0CB] text-[#9E3F00] text-[14px] pt-[4px] pb-[4px] pl-[12px] pr-[12px] rounded-full">Изи монтаж</span>
@@ -588,15 +588,6 @@ const copyTranscript = async () => {
   color: #0f172a;
 }
 
-.modal__left {
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-  max-width: 220px;
-}
-
 .modal__video-wrap {
   width: 216px;
   height: 340px;
@@ -755,36 +746,6 @@ const copyTranscript = async () => {
   letter-spacing: 0.25px;
   vertical-align: middle;
 
-}
-
-/* Right column */
-.modal__right {
-  padding: 1.25rem 1.5rem 1.25rem 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.modal__topic-label {
-  margin: 0 0 0.25rem;
-  font-size: 14px;
-  color: #4E616B;
-  letter-spacing: 0.05em;
-}
-
-.modal__title {
-  font-weight: 600;
-  font-style: Semi Bold;
-  font-size: 24px;
-  line-height: font/line-height/heading-3;
-  letter-spacing: 0px;
-  color: #000000;
-}
-
-.modal__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
 }
 
 .modal__transcript {

@@ -1,62 +1,90 @@
 <template>
-  <article class="min-w-[220px] max-w-[262px] h-[576px] post-card cursor-pointer overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md" @click="$emit('click')">
-    <div class="post-card__media">
-      <img :src="resolvedImageSrc" alt="" class="post-card__img" />
-      <div class="post-card__badges post-card__badges--left">
-        <span class="post-card__badge">
-          <span><img :src="socialMediaLogos" alt="trendsee" class="size-[16px]" /> </span> 
+  <article
+    class="min-w-[220px] max-w-[262px] h-[576px] w-full cursor-pointer overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
+    @click="$emit('click')"
+  >
+    <div class="relative h-[400px] bg-gradient-to-br from-slate-200 to-slate-300">
+      <img :src="resolvedImageSrc" alt="" class="absolute inset-0 h-full w-full object-cover" />
+
+      <!-- Left badges -->
+      <div class="absolute left-2.5 top-2.5 flex flex-col gap-1.5">
+        <span class="inline-flex items-center gap-1 rounded-lg bg-black/40 px-2.5 py-1 text-xs text-white backdrop-blur-xl">
+          <img :src="socialMediaLogos" alt="trendsee" class="size-4" />
           Reels
         </span>
-        <span class="post-card__badge">
-          <span><img :src="whiteFire" alt="trendsee" class="h-[16px]" /> </span> 
+        <span class="inline-flex items-center gap-1 rounded-lg bg-black/40 px-2.5 py-1 text-xs text-white backdrop-blur-xl">
+          <img :src="whiteFire" alt="trendsee" class="h-4" />
           X10
         </span>
       </div>
-      <div class="post-card__badges post-card__badges--right">
-        <span class="post-card__action-icon">
-          <img :src="Heart" alt="trendsee" class="size-[16px]" />
+
+      <!-- Right icons -->
+      <div class="absolute right-2.5 top-2.5 flex flex-col gap-1.5">
+        <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900/60">
+          <img :src="Heart" alt="trendsee" class="size-4" />
         </span>
-        <span class="post-card__action-icon">
-          <img :src="externalLink" alt="trendsee" class="size-[16px]" />
+        <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900/60">
+          <img :src="externalLink" alt="trendsee" class="size-4" />
         </span>
       </div>
-      <div class="post-card__metrics">
-        <div class="post-card__metric">
-          <div  class="size-[20px]" ><img :src="eye" alt=""/></div> 
-          <div class="text-xs">105k</div>
+
+      <!-- Bottom metrics -->
+      <div class="absolute bottom-2.5 left-2.5 right-2.5 flex justify-between rounded-xl bg-black/30 px-4 py-2 text-xs text-white backdrop-blur-md">
+        <div class="flex-col items-center gap-1.5">
+          <img :src="eye" alt="" />
+          <span>105k</span>
         </div>
-        <div class="post-card__metric">
-          <div  class="size-[20px]" ><img :src="Heart" alt=""/></div> 
-          <div class="text-xs">85k</div>
+        <div class="flex-col items-center gap-1.5">
+          <div class="size-5" >
+            <img :src="Heart" alt="" />
+          </div>
+          <span>85k</span>
         </div>
-        <div class="post-card__metric">
-          <div  class="size-[20px]" ><img :src="comments" alt=""/></div> 
-          <div class="text-xs">15k</div>
+        <div class="flex-col items-center gap-1.5">
+          <div class="size-5" >
+            <img :src="comments" alt="" />
+          </div>
+          <span>15k</span>
         </div>
-        <div class="post-card__metric">
-          <div  class="size-[20px]" ><img :src="shares" alt=""/></div> 
-          <div class="text-xs">485</div>
+        <div class="flex-col items-center gap-1.5">
+          <div class="size-5" >
+            <img :src="shares" alt="" />
+          </div>
+          <span>485</span>
         </div>
       </div>
     </div>
-    <div class="post-card__body">
-      <div class="post-card__profile">
-        <div class="">
-          <img :src="image1" alt="" class="size-[40px] post-card__avatar" />          
+
+    <div class="px-3.5 pb-3.5 pt-1">
+      <div class="flex items-center gap-2">
+        <img :src="image1" alt="" class="size-10 rounded-full" />
+        <div class="min-w-0 flex-1">
+          <div class="text-sm font-semibold text-[#2b31b3]">@blogerich</div>
+          <div class="text-xs text-[#4e616b]">384.5K</div>
         </div>
-        <div class="post-card__profile-text">
-          <span class="post-card__username">@blogerich</span>
-          <span class="post-card__followers">384.5K</span>
-        </div>
-        <div class="size-[24px]">
-          <img :src="incognitoMode" alt=""  />          
-          <img :src="plus" alt=""  />          
+        <div class="flex items-center gap-1">
+          <div class="size-3" >
+            <img :src="plus" alt="" />
+          </div>
+          <div class="size-6" >
+            <img :src="incognitoMode" alt="" />
+          </div>
         </div>
       </div>
-      <!-- <h2 class="post-card__title">{{ post.title }}</h2> -->
-      <p class="post-card__preview">{{ previewText }}</p>
-      <p class="post-card__date">{{ formattedDate }}</p>
-      <button type="button" class="post-card__cta" @click.stop="$emit('analyze', post, imageSrc)">Анализ</button>
+
+      <p
+        class="mt-3 mb-3 text-xs leading-[1.45] text-slate-700 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2] overflow-hidden"
+      >
+        {{ previewText }}
+      </p>
+      <p class="text-[11px] text-slate-400">{{ formattedDate }}</p>
+      <button
+        type="button"
+        class="mt-2 w-full rounded-xl bg-indigo-700 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-indigo-800"
+        @click.stop="$emit('analyze', post, imageSrc)"
+      >
+        Анализ
+      </button>
     </div>
   </article>
   
@@ -89,28 +117,3 @@ import cardImage from "../imgs/image.png";
 import incognitoMode from "../imgs/Incognito_mode.png";
 import plus from "../imgs/plus.png";
 </script>
-
-<style scoped>
-.post-card { width: 100%; }
-.post-card__media { position: relative; padding-top: 160%; background: linear-gradient(160deg, #e2e8f0, #cbd5e1); height: 400px }
-.post-card__media-placeholder { position: absolute; inset: 0; }
-.post-card__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.post-card__badges { position: absolute; display: flex; flex-direction: column; gap: 6px; }
-.post-card__badges--left { top: 10px; left: 10px; }
-.post-card__badges--right { top: 10px; right: 10px; }
-.post-card__badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 8px; background: var(--Black-40, #00000066); backdrop-filter: blur(16px); color: #fff; font-size: 12px; }
-.post-card__action-icon { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: rgba(15,23,42,.6); color: #fff; font-size: 14px; }
-.post-card__metrics { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; justify-content: space-between; padding: 8px 16px; border-radius: 12px; background: var(--Black-30, #0000004D); backdrop-filter: blur(8px); color: #fff; font-size: 12px; }
-.post-card__body { padding: 4px 14px 14px; }
-.post-card__profile { display: flex; align-items: center; gap: 8px; }
-.post-card__avatar { width: 36px; height: 36px; border-radius: 999px; background: linear-gradient(135deg, #f97316, #ec4899 50%, #6366f1); color: #fff; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.post-card__profile-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
-.post-card__username { font-size: 14px; font-weight: 600; color: #2b31b3; }
-.post-card__followers { font-size: 12px; color: #4e616b; }
-.post-card__title { font-size: 14px; font-weight: 600; color: #0f172a; line-height: 1.3; }
-.post-card__preview { margin-bottom: 15px; font-size: 12px; line-height: 1.45; color: #334155; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
-.post-card__date { margin-bottom:5px; font-size: 11px; color: #94a3b8; }
-.post-card__cta { width: 100%; padding: 10px 16px; border: none; border-radius: 12px; background: #4338ca; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
-.post-card__cta:hover { background: #3730a3; }
-
-</style>

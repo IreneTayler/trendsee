@@ -30,7 +30,9 @@
         class="flex size-[20px] items-center justify-end"
         @click="toggleSidebar"
       >
-        <img :src="iconLeadingLeft" alt="trendsee" class="size-[15px]" />
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="text-[#41616b]">
+          <path d="M12.7 4.3a1 1 0 0 1 0 1.4L8.41 10l4.3 4.3a1 1 0 1 1-1.42 1.4l-5-5a1 1 0 0 1 0-1.4l5-5a1 1 0 0 1 1.41 0Z" />
+        </svg>
       </button>
     </div>
 
@@ -110,7 +112,6 @@ import { computed } from "vue";
 import SidebarGroup from "./SidebarGroup.vue";
 import SidebarItem from "./SidebarItem.vue";
 import logoUrl from "../imgs/Logo full.png";
-import iconLeadingLeft from "../imgs/Icon_leading_left.png";
 import Fire from "../imgs/Fire.png";
 import iconLeadingRight from "../imgs/Icon_leading_right.png";
 import image1 from "../imgs/image1.png";
