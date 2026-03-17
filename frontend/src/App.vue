@@ -2,10 +2,10 @@
   <div class="flex min-h-screen bg-slate-100 text-slate-900">
     <Sidebar :open="sidebarOpen" @update:open="sidebarOpen = $event" />
     <main
-      class="flex-1 px-4 py-4 md:px-6 md:py-6 transition-[margin] duration-300"
+      class="bg-[#fff] flex-1 px-4 py-4 md:px-6 md:py-6 transition-[margin] duration-300"
       :class="sidebarOpen ? 'md:ml-64' : 'md:ml-0'"
     >
-      <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section class="p-6">
         <FeedView />
       </section>
     </main>

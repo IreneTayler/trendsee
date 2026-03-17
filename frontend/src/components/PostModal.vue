@@ -13,7 +13,10 @@
               ✕
             </button>
 
-            <div class="grid h-full flex-1 grid-cols-[340px,1fr] gap-0 px-10 py-12">
+            <!-- Single scroll area: top card + protruding bottom panel -->
+            <div class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+              <!-- Top block: main card (video, tags, transcript, button) -->
+              <div class="grid min-h-0 grid-cols-[340px,1fr] gap-0 px-10 pt-12 pb-0">
               <!-- Left column: video + profile + metrics -->
               <div class="modal__left">
                 <div class="relative w-[216px] h-[340px]">
@@ -58,17 +61,24 @@
                     <img :src="plus" alt="" />
                   </div>
                 </div>
-                <p class="modal__description">
-                  {{ isDescriptionExpanded ? props.post?.text : descriptionSnippet }}
-                  <div class="flex justify-end">
-                    <button type="button" class="flex items-center" @click="toggleDescription">
-                      <img :src="IconleadingDown" alt="" class="size-[12px]"/>
-                      <span class="text-[#171C1F] text-[12px] pl-1">
-                        {{ isDescriptionExpanded ? "Скрыть" : "Ещё" }}
-                      </span>
-                    </button>
+                <div
+                  class="modal__expand"
+                  :class="{ 'modal__expand--open': isDescriptionExpanded }"
+                >
+                  <div class="">
+                    <div class="modal__description">
+                      <p class="modal__description-text">{{ isDescriptionExpanded ? props.post?.text : descriptionSnippet }}</p>
+                      <div class="flex justify-end">
+                        <button type="button" class="flex items-center" @click="toggleDescription">
+                          <img :src="IconleadingDown" alt="" class="size-[12px]"/>
+                          <span class="text-[#171C1F] text-[12px] pl-1">
+                            {{ isDescriptionExpanded ? "Скрыть" : "Ещё" }}
+                          </span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </p>
+                </div>
                 <ul class="modal__metrics">
                   <li
                     class="flex flex-wrap content-center justify-start items-center bg-[#f4f5f6] rounded-xl pt-[8px] pb-[8px] pl-[16px] pr-[16px]">
@@ -147,33 +157,166 @@
                     </button>
                   </div>
                 </div>
-                <div class="bg-[#F4F5F6] pt-[16px] pb-[8px] pr-[16px] pl-[18px] rounded-md">
-                  <p class="text-[#4E616B]">
-                    {{ isTranscriptExpanded ? post.text : transcriptSnippet }}
-                  </p>
-                  <div class="flex justify-end pt-[12px]">
-                    <button type="button" class="flex items-center" @click="toggleTranscript">
-                      <img :src="IconleadingDown" alt="" class="size-[12px]"/>
-                      <span class="text-[#171C1F] text-[12px] pl-1">
-                        {{ isTranscriptExpanded ? "Скрыть" : "Ещё" }}
-                      </span>
-                    </button>
+                <div
+                  class="modal__expand modal__expand--transcript"
+                  :class="{ 'modal__expand--open': isTranscriptExpanded }"
+                >
+                  <div class="modal__expand-inner bg-[#F4F5F6] rounded-md">
+                    <div class="pt-[16px] pb-[16px] pr-[16px] pl-[18px] ">
+                      <p class="text-[#4E616B]">
+                        {{ isTranscriptExpanded ? post.text : transcriptSnippet }}
+                      </p>
+                      <div class="flex justify-end">
+                        <button type="button" class="flex items-center" @click="toggleTranscript">
+                          <img :src="IconleadingDown" alt="" class="size-[12px]"/>
+                          <span class="text-[#171C1F] text-[12px] pl-1">
+                            {{ isTranscriptExpanded ? "Скрыть" : "Ещё" }}
+                          </span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <button type="button" class="flex justify-evenly items-center bg-[#2B31B3] w-[220px] h-[56px] rounded-xl p-[16px]">
                   <span>
-                      <img :src="primary" alt="" class="size-[24px]"/>
-                  </span> 
-                  <span class="text-[#ffffff] text-[#18px]">Адаптировать</span>                   
+                    <img :src="primary" alt="" class="size-[24px]"/>
+                  </span>
+                  <span class="text-[#ffffff] text-[18px]">Адаптировать</span>
                 </button>
-                <div class="modal__essence">
-                  <h3 class="modal__essence-title">Суть</h3>
-                  <p class="bg-[#F4F5F6] p-[16px] rounded-md text-[#4E616B]">
-                    Разбор состава/логики: он в человеческих словах переводит состав/механику («что реально делает Х»),
-                    называет 2-3 работающих активных компонента и 2-3 маркетинговых «пустых» обещания.
-                  </p>
+
+                 <!-- Protruding panel (right column only), scrolls with content above -->
+                <div class="gap-0 border-t border-slate-200 bg-white pt-4 pb-8">
+                  <div class="min-w-0 space-y-8">
+                    <!-- Суть -->
+                    <section>
+                      <div class="flex items-center gap-2 mb-2">
+                        <h3 class="text-slate-900 font-bold text-lg">Суть</h3>
+                      </div>
+                      <div class="bg-[#F4F5F6] p-4 rounded-xl text-[#4E616B] text-sm leading-relaxed">
+                        Разбор состава/логики: он в человеческих словах переводит состав/механику («что реально делает Х»),
+                        называет 2-3 работающих активных компонента и 2-3 маркетинговых «пустых» обещания.
+                      </div>
+                    </section>
+
+                    <!-- Структура -->
+                    <section>
+                      <h3 class="text-slate-900 font-bold text-lg mb-4">Структура</h3>
+                      <div class="bg-[#F4F5F6] rounded-xl p-4 space-y-0">
+                        <div class="flex gap-4">
+                          <div class="flex flex-col items-center">
+                            <div class="flex items-start gap-2">
+                              <span class="text-slate-400 text-xs mt-0.5">
+                                <img :src="iconTime" alt="" class="size-[16px]"/>
+                              </span>
+                              <span class="text-slate-400 text-xs whitespace-nowrap">0-3 сек</span>
+                            </div>
+                          </div>
+                          <div>
+                            <img :src="Ellipse1" alt="" class="size-[16px]"/>
+                            <img :src="StepTimeIcon" class="ml-[7px]" alt="" />
+                          </div>                         
+                          <div class="flex-1 pb-4">
+                            <p class="font-semibold text-slate-900 text-sm">Шок-сравнение</p>
+                            <p class="text-[#4E616B] text-sm mt-1">Визуальный (Девушка с предметом) + Текст на экране: «Это спасет вашу зиму»</p>
+                          </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                          <div class="flex flex-col items-center">
+                            <div class="flex items-start gap-2">
+                              <span class="text-slate-400 text-xs mt-0.5">
+                                <img :src="iconTime" alt="" class="size-[16px]"/>
+                              </span>
+                              <span class="text-slate-400 text-xs whitespace-nowrap">0-3 сек</span>
+                            </div>
+                          </div>
+                          <div>
+                            <img :src="Ellipse2" alt="" class="size-[16px]"/>
+                            <img :src="StepTimeIcon" class="ml-[7px]" alt="" />
+                          </div>                         
+                          <div class="flex-1 pb-4">
+                            <p class="font-semibold text-slate-900 text-sm">Сюжет</p>
+                            <p class="text-[#4E616B] text-sm mt-1">[Герой] показывает проблему -> Резкар смена кадра -> Решение</p>
+                          </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                          <div class="flex flex-col items-center">
+                            <div class="flex items-start gap-2">
+                              <span class="text-slate-400 text-xs mt-0.5">
+                                <img :src="iconTime" alt="" class="size-[16px]"/>
+                              </span>
+                              <span class="text-slate-400 text-xs whitespace-nowrap">0-3 сек</span>
+                            </div>
+                          </div>
+                          <div>
+                            <img :src="Ellipse3" alt="" class="size-[16px]"/>
+                            <img :src="StepTimeIcon" class="ml-[7px]" alt="" />
+                          </div>                         
+                          <div class="flex-1 pb-4">
+                            <p class="font-semibold text-slate-900 text-sm">Финал / CTA</p>
+                            <p class="text-[#4E616B] text-sm mt-1">Призыв: "Пиши слово "ССЫЛКА" в комменты"</p>
+                          </div>
+                        </div>
+
+                      </div>
+                    </section>
+
+                    <!-- Хук фраза, Визуальный хук, Текстовый хук -->
+                    <section class="bg-[#F4F5F6] rounded-xl p-4 space-y-4">
+                      <div class="flex items-start justify-between gap-3">
+                        <div>
+                          <p class="font-bold text-slate-900 text-sm">Хук фраза</p>
+                          <p class="text-[#4E616B] text-sm mt-1">Одна из них — пустышка. Угадаешь какая?</p>
+                        </div>
+                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать">⎘</button>
+                      </div>
+                      <div class="border-t border-slate-200 pt-4 flex items-start justify-between gap-3">
+                        <div>
+                          <p class="font-bold text-slate-900 text-sm">Визуальный хук</p>
+                          <p class="text-[#4E616B] text-sm mt-1">Одна из них — пустышка. Угадаешь какая?</p>
+                        </div>
+                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать">⎘</button>
+                      </div>
+                      <div class="border-t border-slate-200 pt-4 flex items-start justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                          <span class="text-slate-500" aria-hidden="true">👆</span>
+                          <div>
+                            <p class="font-bold text-slate-900 text-sm">Текстовый хук</p>
+                            <p class="text-[#4E616B] text-sm mt-1">Одна из них — пустышка. Угадаешь какая?</p>
+                          </div>
+                        </div>
+                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать">⎘</button>
+                      </div>
+                    </section>
+
+                    <!-- Рабочие приемы -->
+                    <section>
+                      <div class="flex items-center justify-between gap-3 mb-3">
+                        <h3 class="text-slate-900 font-bold text-lg">Рабочие приемы</h3>
+                        <button type="button" class="p-1.5 rounded hover:bg-slate-100 text-slate-500" aria-label="Копировать">⎘</button>
+                      </div>
+                      <div class="space-y-6 text-sm">
+                        <div>
+                          <p class="font-semibold text-slate-900">2. Суть видео</p>
+                          <p class="text-[#4E616B] mt-1">Приём: «кому подходит / кому нет» двумя блоками.</p>
+                          <p class="text-[#4E616B] mt-2">Почему сработало: это формат «диагноз → лечение → решение». Люди сохраняют не эмоции, а инструкцию. И это «обзор», а не философия.</p>
+                        </div>
+                        <div>
+                          <p class="font-semibold text-slate-900">3. Монтаж</p>
+                          <p class="text-[#4E616B] mt-1">Приём: смена планов каждые 1-2 секунды: лицо → продукт крупно → рука (демо) → снова лицо.</p>
+                          <p class="text-[#4E616B] mt-2">Почему сработало: вертикалки смотрят на автопилоте. Частая смена планов держит внимание даже без звука.</p>
+                          <p class="text-[#4E616B] mt-2">Приём: все доказательства — через B-roll вставки на 0.3-0.8 сек (катышки, блеск, этикетка, нанесение).</p>
+                          <p class="text-[#4E616B] mt-2">Почему сработало: речь в кадре быстро утомляет. B-roll делает ощущение «я реально тестировал».</p>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
                 </div>
               </div>
+            </div>
+
+           
             </div>
           </div>
         </Transition>
@@ -201,6 +344,11 @@ import IconLeading from "../imgs/Icon Leading (1).png";
 import ButtonSecondary from "../imgs/Button Secondary.png";
 import IconleadingDown from "../imgs/Icon_leading_down.png";
 import primary from "../imgs/primary.png";
+import iconTime from "../imgs/Icon_time.png";
+import Ellipse1 from "../imgs/Ellipse 1.png";
+import Ellipse2 from "../imgs/Ellipse 1 (1).png";
+import Ellipse3 from "../imgs/Ellipse 1 (2).png";
+import StepTimeIcon from "../imgs/Step Time Icon.png";
 
 
 const props = defineProps<{ visible: boolean; imageSrc?: string; post: Post | null }>();
@@ -271,6 +419,7 @@ const copyTranscript = async () => {
   justify-content: flex-end;
   background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(8px);
+  overflow: hidden;
 }
 
 .modal__close {
@@ -403,11 +552,28 @@ const copyTranscript = async () => {
   color: #64748b;
 }
 
+.modal__expand {
+  overflow: hidden;
+  transition: max-height 0.35s ease-out;
+}
+.modal__expand:not(.modal__expand--open) {
+  max-height: 100px;
+}
+.modal__expand.modal__expand--open {
+  max-height: 2000px;
+}
+.modal__expand--transcript:not(.modal__expand--open) {
+  max-height: 217px;
+}
+
 .modal__description {
   margin: 0;
   font-size: 0.85rem;
   line-height: 1.45;
   color: #334155;
+}
+.modal__description-text {
+  margin: 0 0 0.5rem;
 }
 
 
