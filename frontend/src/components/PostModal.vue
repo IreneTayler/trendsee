@@ -7,18 +7,22 @@
         <Transition name="panel-slide">
           <div
             v-if="post"
-            class="h-screen w-full max-w-[960px] flex flex-col overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.2)] rounded-tl-2xl rounded-bl-2xl"
+            class="modal__panel h-screen w-full max-w-[960px] flex flex-col overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.2)] rounded-tl-2xl rounded-bl-2xl"
+            :class="{ 'modal__panel--dragging': isPanelDragging }"
+            :style="panelVars"
+            @mousedown="onPanelMouseDown"
+            @touchstart.passive="onPanelTouchStart"
           >
             <button type="button" class="modal__close" aria-label="Закрыть" @click="onClose">
               ✕
             </button>
 
             <!-- Single scroll area: top card + protruding bottom panel -->
-            <div class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+            <div class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pt-12 pb-12">
               <!-- Top block: main card (video, tags, transcript, button) -->
-              <div class="grid min-h-0 grid-cols-[340px,1fr] gap-0 px-10 pt-12 pb-0">
+              <div class="grid min-h-0 grid-cols-[340px,1fr] gap-0 px-10 pb-0">
               <!-- Left column: video + profile + metrics -->
-              <div class="modal__left">
+              <div class="modal__left sticky top-0 self-start">
                 <div class="relative w-[216px] h-[340px]">
                   <img
                     v-if="imageSrc"
@@ -210,18 +214,18 @@
                               </span>
                               <span class="text-slate-400 text-xs whitespace-nowrap">0-3 сек</span>
                             </div>
+                            <div>
+                              <img :src="Ellipse1" alt="" class="size-[16px]"/>
+                              <img :src="StepTimeIcon" alt="" class="ml-[7px]"/>
+                            </div>
                           </div>
-                          <div>
-                            <img :src="Ellipse1" alt="" class="size-[16px]"/>
-                            <img :src="StepTimeIcon" class="ml-[7px]" alt="" />
-                          </div>                         
                           <div class="flex-1 pb-4">
                             <p class="font-semibold text-slate-900 text-sm">Шок-сравнение</p>
                             <p class="text-[#4E616B] text-sm mt-1">Визуальный (Девушка с предметом) + Текст на экране: «Это спасет вашу зиму»</p>
                           </div>
                         </div>
-
-                        <div class="flex gap-4">
+                        
+                         <div class="flex gap-4">
                           <div class="flex flex-col items-center">
                             <div class="flex items-start gap-2 w-[96px]">
                               <span class="text-slate-400 text-xs mt-0.5">
@@ -229,18 +233,18 @@
                               </span>
                               <span class="text-slate-400 text-xs whitespace-nowrap">3-15 сек</span>
                             </div>
+                            <div>
+                              <img :src="Ellipse2" alt="" class="size-[16px]"/>
+                              <img :src="StepTimeIcon" alt="" class="ml-[7px]"/>
+                            </div>
                           </div>
-                          <div>
-                            <img :src="Ellipse2" alt="" class="size-[16px]"/>
-                            <img :src="StepTimeIcon" class="ml-[7px]" alt="" />
-                          </div>                         
                           <div class="flex-1 pb-4">
                             <p class="font-semibold text-slate-900 text-sm">Сюжет</p>
                             <p class="text-[#4E616B] text-sm mt-1">[Герой] показывает проблему -> Резкар смена кадра -> Решение</p>
                           </div>
                         </div>
 
-                        <div class="flex gap-4">
+                         <div class="flex gap-4">
                           <div class="flex flex-col items-center">
                             <div class="flex items-start gap-2 w-[96px]">
                               <span class="text-slate-400 text-xs mt-0.5">
@@ -248,16 +252,15 @@
                               </span>
                               <span class="text-slate-400 text-xs whitespace-nowrap">15-120 сек</span>
                             </div>
+                            <div>
+                              <img :src="Ellipse3" alt="" class="size-[16px]"/>
+                            </div>
                           </div>
-                          <div>
-                            <img :src="Ellipse3" alt="" class="size-[16px]"/>
-                          </div>                         
                           <div class="flex-1 pb-4">
-                            <p class="font-semibold text-slate-900 text-sm">Финал / CTA</p>
-                            <p class="text-[#4E616B] text-sm mt-1">Призыв: "Пиши слово "ССЫЛКА" в комменты"</p>
+                            <p class="font-semibold text-slate-900 text-sm">Финал / СТА</p>
+                            <p class="text-[#4E616B] text-sm mt-1">Призыв: «Пиши слово \"ССЫЛКА\" в комменты»</p>
                           </div>
                         </div>
-
                       </div>
                     </section>
 
@@ -268,18 +271,14 @@
                           <p class="font-bold text-slate-900 text-sm">Хук фраза</p>
                           <p class="text-[#4E616B] text-sm mt-1">Одна из них — пустышка. Угадаешь какая?</p>
                         </div>
-                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать">
-                           <img :src="ButtonSecondary" alt="" class="size-[12px]"/>
-                        </button>
+                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать"> <img :src="ButtonSecondary" alt="" class="size-[12px]"/></button>
                       </div>
                       <div class="border-t border-slate-200 pt-4 flex items-start justify-between gap-3">
                         <div>
                           <p class="font-bold text-slate-900 text-sm">Визуальный хук</p>
                           <p class="text-[#4E616B] text-sm mt-1">Одна из них — пустышка. Угадаешь какая?</p>
                         </div>
-                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать">
-                            <img :src="ButtonSecondary" alt="" class="size-[12px]"/>
-                        </button>
+                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать"> <img :src="ButtonSecondary" alt="" class="size-[12px]"/></button>
                       </div>
                       <div class="border-t border-slate-200 pt-4 flex items-start justify-between gap-3">
                         <div class="flex items-center gap-2">
@@ -288,9 +287,7 @@
                             <p class="text-[#4E616B] text-sm mt-1">Одна из них — пустышка. Угадаешь какая?</p>
                           </div>
                         </div>
-                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать">
-                          <img :src="ButtonSecondary" alt="" class="size-[12px]"/>
-                        </button>
+                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать"> <img :src="ButtonSecondary" alt="" class="size-[12px]"/></button>
                       </div>
                     </section>
 
@@ -298,11 +295,9 @@
                     <section>
                       <div class="flex items-center justify-between gap-3 mb-3">
                         <h3 class="text-slate-900 font-bold text-lg">Рабочие приемы</h3>
-                        <button type="button" class="p-1.5 rounded hover:bg-slate-100 text-slate-500" aria-label="Копировать">
-                          <img :src="ButtonSecondary" alt="" class="size-[12px]"/>
-                        </button>
+                        <button type="button" class="p-1.5 rounded hover:bg-slate-100 text-slate-500" aria-label="Копировать"> <img :src="ButtonSecondary" alt="" class="size-[12px]"/></button>
                       </div>
-                      <div class="space-y-6 text-sm">
+                      <div class="space-y-6 text-sm rounded-xl bg-[#F4F5F6] p-4">
                         <div>
                           <p class="font-semibold text-slate-900">2. Суть видео</p>
                           <p class="text-[#4E616B] mt-1">Приём: «кому подходит / кому нет» двумя блоками.</p>
@@ -314,6 +309,44 @@
                           <p class="text-[#4E616B] mt-2">Почему сработало: вертикалки смотрят на автопилоте. Частая смена планов держит внимание даже без звука.</p>
                           <p class="text-[#4E616B] mt-2">Приём: все доказательства — через B-roll вставки на 0.3-0.8 сек (катышки, блеск, этикетка, нанесение).</p>
                           <p class="text-[#4E616B] mt-2">Почему сработало: речь в кадре быстро утомляет. B-roll делает ощущение «я реально тестировал».</p>
+                        </div>
+                         <div>
+                          <p class="font-semibold text-slate-900">4. Реплики</p>
+                          <p class="text-[#4E616B] mt-1">Приём: “триггер доверия” одной фразой: “Я не продаю этот SPF, мне пох, скажу как есть.”</p>
+                          <p class="text-[#4E616B] mt-2">Почему сработало: снимает защиту “мне впаривают”.</p>
+                          <p class="text-[#4E616B] mt-2">Приём: “вилка выбора” в середине: “Если кожа жирная — делай так. Если сухая — так.”</p>
+                          <p class="text-[#4E616B] mt-2">Почему сработало: персонализация без долгого объяснения = удержание.</p>
+                        </div>
+                      </div>
+                    </section>
+
+                    <!-- Воронка / Маркетинг -->
+                    <section>
+                      <h3 class="text-slate-900 font-bold text-lg mb-3">Воронка / Маркетинг</h3>
+                      <div class="space-y-5 rounded-xl bg-[#F4F5F6] p-4 text-sm text-[#4E616B]">
+                        <div>
+                          <p class="font-semibold text-slate-900">CTA голос/визуал</p>
+                          <p class="mt-1">
+                            Почему сработало: зритель узнаёт свой баг мгновенно. Это не «мнение», а физический факт в кадре, мозг зацепляется.
+                          </p>
+                        </div>
+                        <div>
+                          <p class="font-semibold text-slate-900">Триггер</p>
+                          <p class="mt-1">
+                            Почему сработало: зритель узнаёт свой баг мгновенно. Это не «мнение», а физический факт в кадре, мозг зацепляется.
+                          </p>
+                        </div>
+                        <div>
+                          <p class="font-semibold text-slate-900">Куда ведет</p>
+                          <p class="mt-1">
+                            Почему сработало: зритель узнаёт свой баг мгновенно. Это не «мнение», а физический факт в кадре, мозг зацепляется.
+                          </p>
+                        </div>
+                        <div>
+                          <p class="font-semibold text-slate-900">Лид-магнит</p>
+                          <p class="mt-1">
+                            Почему сработало: зритель узнаёт свой баг мгновенно. Это не «мнение», а физический факт в кадре, мозг зацепляется.
+                          </p>
                         </div>
                       </div>
                     </section>
@@ -332,7 +365,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onBeforeUnmount, ref, watch } from "vue";
 import type { Post } from "../api";
 import socialMediaLogos from "../imgs/Social media Logos.png";
 import whiteFire from "../imgs/white_fire.png";
@@ -392,6 +425,110 @@ const toggleDescription = () => {
 const toggleTranscript = () => {
   isTranscriptExpanded.value = !isTranscriptExpanded.value;
 };
+
+const modalDx = ref(0);
+const modalDy = ref(0);
+const isPanelDragging = ref(false);
+const dragStartX = ref(0);
+const dragStartY = ref(0);
+const dragStartDx = ref(0);
+const dragStartDy = ref(0);
+
+const panelVars = computed(() => ({
+  "--modal-dx": `${modalDx.value}px`,
+  "--modal-dy": `${modalDy.value}px`,
+}) as Record<string, string>);
+
+const isInteractiveTarget = (target: EventTarget | null) => {
+  const el = target as HTMLElement | null;
+  if (!el) return false;
+  return Boolean(el.closest("button, a, input, textarea, select, label"));
+};
+
+const onPanelMouseDown = (e: MouseEvent) => {
+  if (isInteractiveTarget(e.target)) return;
+  isPanelDragging.value = true;
+  dragStartX.value = e.clientX;
+  dragStartY.value = e.clientY;
+  dragStartDx.value = modalDx.value;
+  dragStartDy.value = modalDy.value;
+  window.addEventListener("mousemove", onPanelMouseMove);
+  window.addEventListener("mouseup", onPanelMouseUp);
+};
+
+const onPanelMouseMove = (e: MouseEvent) => {
+  if (!isPanelDragging.value) return;
+  modalDx.value = dragStartDx.value + (e.clientX - dragStartX.value);
+  modalDy.value = dragStartDy.value + (e.clientY - dragStartY.value);
+};
+
+const onPanelMouseUp = () => {
+  if (!isPanelDragging.value) return;
+  isPanelDragging.value = false;
+  window.removeEventListener("mousemove", onPanelMouseMove);
+  window.removeEventListener("mouseup", onPanelMouseUp);
+};
+
+const onPanelTouchStart = (e: TouchEvent) => {
+  if (isInteractiveTarget(e.target)) return;
+  const t = e.touches[0];
+  if (!t) return;
+  isPanelDragging.value = true;
+  dragStartX.value = t.clientX;
+  dragStartY.value = t.clientY;
+  dragStartDx.value = modalDx.value;
+  dragStartDy.value = modalDy.value;
+  window.addEventListener("touchmove", onPanelTouchMove, { passive: false });
+  window.addEventListener("touchend", onPanelTouchEnd);
+  window.addEventListener("touchcancel", onPanelTouchEnd);
+};
+
+const onPanelTouchMove = (e: TouchEvent) => {
+  if (!isPanelDragging.value) return;
+  const t = e.touches[0];
+  if (!t) return;
+  e.preventDefault();
+  modalDx.value = dragStartDx.value + (t.clientX - dragStartX.value);
+  modalDy.value = dragStartDy.value + (t.clientY - dragStartY.value);
+};
+
+const onPanelTouchEnd = () => {
+  if (!isPanelDragging.value) return;
+  isPanelDragging.value = false;
+  window.removeEventListener("touchmove", onPanelTouchMove);
+  window.removeEventListener("touchend", onPanelTouchEnd);
+  window.removeEventListener("touchcancel", onPanelTouchEnd);
+};
+
+onBeforeUnmount(() => {
+  window.removeEventListener("mousemove", onPanelMouseMove);
+  window.removeEventListener("mouseup", onPanelMouseUp);
+  window.removeEventListener("touchmove", onPanelTouchMove);
+  window.removeEventListener("touchend", onPanelTouchEnd);
+  window.removeEventListener("touchcancel", onPanelTouchEnd);
+});
+
+const lockBodyScroll = (locked: boolean) => {
+  const body = document.body;
+  if (!body) return;
+  if (locked) {
+    body.style.overflow = "hidden";
+    body.style.overscrollBehavior = "contain";
+    body.style.touchAction = "none";
+  } else {
+    body.style.overflow = "";
+    body.style.overscrollBehavior = "";
+    body.style.touchAction = "";
+  }
+};
+
+watch(
+  () => props.visible,
+  (v) => lockBodyScroll(Boolean(v)),
+  { immediate: true },
+);
+
+onBeforeUnmount(() => lockBodyScroll(false));
 
 const copyTranscript = async () => {
   const text = props.post?.text ?? "";
@@ -668,6 +805,18 @@ const copyTranscript = async () => {
   font-size: 0.95rem;
   font-weight: 600;
   color: #0f172a;
+}
+
+.modal__panel {
+  --modal-dx: 0px;
+  --modal-dy: 0px;
+  translate: var(--modal-dx) var(--modal-dy);
+  cursor: grab;
+  user-select: none;
+}
+
+.modal__panel--dragging {
+  cursor: grabbing;
 }
 
 /* Overlay fade animation - radial spotlight */

@@ -109,7 +109,7 @@ import plus from "../imgs/plus.png";
 .post-card__followers { font-size: 12px; color: #4e616b; }
 .post-card__title { font-size: 14px; font-weight: 600; color: #0f172a; line-height: 1.3; }
 .post-card__preview { margin-bottom: 15px; font-size: 12px; line-height: 1.45; color: #334155; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
-.post-card__date { font-size: 11px; color: #94a3b8; }
+.post-card__date { margin-bottom:5px; font-size: 11px; color: #94a3b8; }
 .post-card__cta { width: 100%; padding: 10px 16px; border: none; border-radius: 12px; background: #4338ca; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
 .post-card__cta:hover { background: #3730a3; }
 

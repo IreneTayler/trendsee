@@ -1,16 +1,21 @@
 <template>
-  <button
-    v-if="!isOpen"
-    type="button"
-    class="fixed left-4 top-4 z-40 flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 shadow-md hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-colors"
-    @click="toggleSidebar"
-  >
-    <img
-      :src="iconLeadingLeft"
-      alt="trendsee"
-      class="h-4 w-4 rotate-180"
-    />
-  </button>
+  <!-- Sophisticated hover affordance when sidebar is hidden -->
+  <div v-if="!isOpen" class="fixed inset-y-0 left-0 z-40 w-5 group">
+    <div class="absolute inset-y-0 left-0 w-1.5 bg-transparent group-hover:bg-slate-900/5 transition-colors" />
+    <button
+      type="button"
+      class="absolute left-2 top-4 flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white/90 text-slate-700 shadow-[0_10px_30px_rgba(15,23,42,0.18)] backdrop-blur-sm opacity-0 translate-x-[-6px] group-hover:opacity-100 group-hover:translate-x-0 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-200 focus:opacity-100 focus:translate-x-0"
+      @click="toggleSidebar"
+      aria-label="Открыть меню"
+    >
+      <!-- vertical kebab (three dots) -->
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true">
+        <circle cx="9" cy="3.5" r="1.5" />
+        <circle cx="9" cy="9" r="1.5" />
+        <circle cx="9" cy="14.5" r="1.5" />
+      </svg>
+    </button>
+  </div>
 
   <aside
     class="fixed top-0 left-0 z-30 flex h-screen w-64 flex-col bg-[#f4f5f6] px-4 py-5 text-slate-100 transition-transform duration-300"
@@ -71,7 +76,7 @@
           <div class="h-full w-[28%] rounded-full bg-indigo-500" />
         </div>
       </div>
-      <button type="button" class="flex w-full items-center justify-between text-base text-[#4e616b] hover:text-white">
+      <button type="button" class="flex w-full items-center justify-between text-base text-[#4e616b]">
         Creative +
         <span><img :src="iconLeadingRight" alt="trendsee" class="size-[20px]" /></span>
       </button>

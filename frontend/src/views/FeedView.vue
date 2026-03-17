@@ -13,10 +13,6 @@
     </header>
 
     <!-- Row label like in design: date + Анализ -->
-    <div class="flex flex-wrap items-center gap-3 text-sm text-slate-500">
-      <span>12.12.2025</span>
-      <button type="button" class="rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">Анализ</button>
-    </div>
 
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" ref="feedRoot">
       <PostCard
