@@ -204,7 +204,7 @@
                       <div class="bg-[#F4F5F6] rounded-xl p-4 space-y-0">
                         <div class="flex gap-4">
                           <div class="flex flex-col items-center">
-                            <div class="flex items-start gap-2">
+                            <div class="flex items-start gap-2 w-[96px]">
                               <span class="text-slate-400 text-xs mt-0.5">
                                 <img :src="iconTime" alt="" class="size-[16px]"/>
                               </span>
@@ -223,11 +223,11 @@
 
                         <div class="flex gap-4">
                           <div class="flex flex-col items-center">
-                            <div class="flex items-start gap-2">
+                            <div class="flex items-start gap-2 w-[96px]">
                               <span class="text-slate-400 text-xs mt-0.5">
                                 <img :src="iconTime" alt="" class="size-[16px]"/>
                               </span>
-                              <span class="text-slate-400 text-xs whitespace-nowrap">0-3 сек</span>
+                              <span class="text-slate-400 text-xs whitespace-nowrap">3-15 сек</span>
                             </div>
                           </div>
                           <div>
@@ -242,16 +242,15 @@
 
                         <div class="flex gap-4">
                           <div class="flex flex-col items-center">
-                            <div class="flex items-start gap-2">
+                            <div class="flex items-start gap-2 w-[96px]">
                               <span class="text-slate-400 text-xs mt-0.5">
                                 <img :src="iconTime" alt="" class="size-[16px]"/>
                               </span>
-                              <span class="text-slate-400 text-xs whitespace-nowrap">0-3 сек</span>
+                              <span class="text-slate-400 text-xs whitespace-nowrap">15-120 сек</span>
                             </div>
                           </div>
                           <div>
                             <img :src="Ellipse3" alt="" class="size-[16px]"/>
-                            <img :src="StepTimeIcon" class="ml-[7px]" alt="" />
                           </div>                         
                           <div class="flex-1 pb-4">
                             <p class="font-semibold text-slate-900 text-sm">Финал / CTA</p>
@@ -269,24 +268,29 @@
                           <p class="font-bold text-slate-900 text-sm">Хук фраза</p>
                           <p class="text-[#4E616B] text-sm mt-1">Одна из них — пустышка. Угадаешь какая?</p>
                         </div>
-                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать">⎘</button>
+                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать">
+                           <img :src="ButtonSecondary" alt="" class="size-[12px]"/>
+                        </button>
                       </div>
                       <div class="border-t border-slate-200 pt-4 flex items-start justify-between gap-3">
                         <div>
                           <p class="font-bold text-slate-900 text-sm">Визуальный хук</p>
                           <p class="text-[#4E616B] text-sm mt-1">Одна из них — пустышка. Угадаешь какая?</p>
                         </div>
-                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать">⎘</button>
+                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать">
+                            <img :src="ButtonSecondary" alt="" class="size-[12px]"/>
+                        </button>
                       </div>
                       <div class="border-t border-slate-200 pt-4 flex items-start justify-between gap-3">
                         <div class="flex items-center gap-2">
-                          <span class="text-slate-500" aria-hidden="true">👆</span>
                           <div>
                             <p class="font-bold text-slate-900 text-sm">Текстовый хук</p>
                             <p class="text-[#4E616B] text-sm mt-1">Одна из них — пустышка. Угадаешь какая?</p>
                           </div>
                         </div>
-                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать">⎘</button>
+                        <button type="button" class="flex-shrink-0 p-1.5 rounded hover:bg-white/60 text-slate-500" aria-label="Копировать">
+                          <img :src="ButtonSecondary" alt="" class="size-[12px]"/>
+                        </button>
                       </div>
                     </section>
 
@@ -294,7 +298,9 @@
                     <section>
                       <div class="flex items-center justify-between gap-3 mb-3">
                         <h3 class="text-slate-900 font-bold text-lg">Рабочие приемы</h3>
-                        <button type="button" class="p-1.5 rounded hover:bg-slate-100 text-slate-500" aria-label="Копировать">⎘</button>
+                        <button type="button" class="p-1.5 rounded hover:bg-slate-100 text-slate-500" aria-label="Копировать">
+                          <img :src="ButtonSecondary" alt="" class="size-[12px]"/>
+                        </button>
                       </div>
                       <div class="space-y-6 text-sm">
                         <div>
