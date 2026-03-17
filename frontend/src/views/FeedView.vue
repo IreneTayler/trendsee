@@ -15,20 +15,14 @@
     <!-- Row label like in design: date + Анализ -->
 
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" ref="feedRoot">
-      <div
+      <PostCard
         v-for="post in posts"
         :key="post.id"
-        class="contents"
-        :data-post-id="post.id"
-        :ref="(el) => registerCardEl(post.id, el)"
-      >
-        <PostCard
-          :post="post"
-          :image-src="cardImage"
-          @click="openPost(post, cardImage)"
-          @analyze="openPost"
-        />
-      </div>
+        :post="post"
+        :image-src="cardImage"
+        @click="openPost(post, cardImage)"
+        @analyze="onAnalyze"
+      />
       <template v-if="isLoading && posts.length === 0">
         <article
           v-for="i in 8"
@@ -73,12 +67,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 import { fetchUserPosts, fetchUserPostCount, type Post } from "../api";
 import PostCard from "../components/PostCard.vue";
 import PostModal from "../components/PostModal.vue";
 import cardImage from "../imgs/image.png";
 
+const feedRoot = ref<HTMLElement | null>(null);
 const posts = ref<Post[]>([]);
 const page = ref(0);
 const limit = 10;
@@ -90,56 +85,11 @@ const isModalOpen = ref(false);
 const selectedPost = ref<Post | null>(null);
 const selectedImageSrc = ref<string | undefined>(undefined);
 const isPostRevealLoading = ref(false);
+const activeLoadToken = ref(0);
 
-const observer = ref<IntersectionObserver | null>(null);
-const visibleIds = ref<Set<number>>(new Set());
-const cardEls = ref<Map<number, Element>>(new Map());
-
-const visibleCount = computed(() => visibleIds.value.size);
-
-const ensureObserver = () => {
-  if (observer.value) return;
-  observer.value = new IntersectionObserver(
-    (entries) => {
-      const next = new Set(visibleIds.value);
-      for (const entry of entries) {
-        const idAttr = (entry.target as HTMLElement).dataset.postId;
-        const id = idAttr ? Number(idAttr) : NaN;
-        if (!Number.isFinite(id)) continue;
-        if (entry.isIntersecting) next.add(id);
-        else next.delete(id);
-      }
-      visibleIds.value = next;
-    },
-    {
-      root: null,
-      // count as "visible" when a meaningful part is on screen
-      threshold: [0.25],
-    },
-  );
-};
-
-const registerCardEl = (postId: number, el: Element | null) => {
-  ensureObserver();
-  const obs = observer.value;
-  if (!obs) return;
-
-  const prev = cardEls.value.get(postId);
-  if (prev) {
-    obs.unobserve(prev);
-    cardEls.value.delete(postId);
-  }
-
-  if (el) {
-    cardEls.value.set(postId, el);
-    obs.observe(el);
-  } else {
-    // element removed -> also remove from visible set
-    const next = new Set(visibleIds.value);
-    next.delete(postId);
-    visibleIds.value = next;
-  }
-};
+function onAnalyze(post: Post, imageSrc?: string) {
+  openPost(post, imageSrc ?? cardImage);
+}
 
 function openPost(post: Post, imageSrc?: string) {
   isModalOpen.value = true;
@@ -156,6 +106,8 @@ function openPost(post: Post, imageSrc?: string) {
 async function loadMore() {
   if (isLoading.value || !hasMore.value) return;
   if (!userId.value || userId.value < 1) return;
+  // Avoid background infinite-scroll while modal is open
+  if (isModalOpen.value) return;
   isLoading.value = true;
   try {
     const offset = page.value * limit;
@@ -173,6 +125,7 @@ async function loadMore() {
 
 async function loadInitial() {
   if (!userId.value || userId.value < 1) return;
+  const token = ++activeLoadToken.value;
   isLoading.value = true;
   posts.value = [];
   page.value = 0;
@@ -182,6 +135,7 @@ async function loadInitial() {
       fetchUserPostCount(userId.value),
       fetchUserPosts(userId.value, limit, 0),
     ]);
+    if (token !== activeLoadToken.value) return;
     totalCount.value = count;
     posts.value = data;
     page.value = 1;
@@ -190,6 +144,7 @@ async function loadInitial() {
     console.error(e);
     hasMore.value = false;
   } finally {
+    if (token !== activeLoadToken.value) return;
     isLoading.value = false;
   }
 }
@@ -208,15 +163,8 @@ watch(userId, () => {
   totalCount.value = null;
   if (!userId.value || userId.value < 1) {
     posts.value = [];
-    visibleIds.value = new Set();
     return;
   }
   loadInitial();
-});
-
-onBeforeUnmount(() => {
-  if (observer.value) observer.value.disconnect();
-  observer.value = null;
-  cardEls.value.clear();
 });
 </script>

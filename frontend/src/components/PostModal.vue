@@ -592,7 +592,16 @@ const lockBodyScroll = (locked: boolean) => {
 
 watch(
   () => props.visible,
-  (v) => lockBodyScroll(Boolean(v)),
+  (v) => {
+    const isOpen = Boolean(v);
+    lockBodyScroll(isOpen);
+    // If the modal was dragged off-screen, reset position on open.
+    if (isOpen) {
+      modalDx.value = 0;
+      modalDy.value = 0;
+      isPanelDragging.value = false;
+    }
+  },
   { immediate: true },
 );
 
